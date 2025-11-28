@@ -144,8 +144,7 @@ const Orders = () => {
                       <p className="text-white">{order.items_count} part(s)</p>
                     </div>
                     <div>
-                      <span className="text-gray-400">Delivery To:</span>
-                      <p className="text-white">{order.delivery_info.address}</p>
+              
                     </div>
                   </div>
                 </div>
@@ -156,9 +155,7 @@ const Orders = () => {
                     <div className="text-2xl font-bold text-cyan-400">
                       ${order.total_price}
                     </div>
-                    <div className="text-sm text-gray-400">
-                      Est. delivery: {formatDate(order.delivery_info.estimated_delivery)}
-                    </div>
+                 
                   </div>
                   
                   <button className="flex items-center justify-center space-x-2 bg-slate-700 hover:bg-slate-600 text-white px-4 py-2 rounded-lg transition-colors duration-200">
@@ -168,21 +165,7 @@ const Orders = () => {
                 </div>
               </div>
 
-              {/* Progress Bar for Pending Orders */}
-              {order.status === 'pending' && (
-                <div className="mt-4">
-                  <div className="flex justify-between text-xs text-gray-400 mb-2">
-                    <span>Order Placed</span>
-                    <span>In Production</span>
-                    <span>Quality Check</span>
-                    <span>Shipped</span>
-                    <span>Delivered</span>
-                  </div>
-                  <div className="w-full bg-slate-700 rounded-full h-2">
-                    <div className="bg-cyan-500 h-2 rounded-full w-2/5"></div>
-                  </div>
-                </div>
-              )}
+              
             </div>
           );
         })}

@@ -18,14 +18,14 @@ const Navigation = ({ cartItemsCount }: NavigationProps) => {
     <nav className="bg-slate-900 border-b border-cyan-500/30 shadow-lg">
       <div className="max-w-7xl mx-auto px-4">
         <div className="flex justify-between items-center h-16">
-          {/* Logo/Brand */}
+        
           <div className="shrink-0">
             <h1 className="text-cyan-400 text-xl font-bold tracking-wider">
               CYBORG PARTS
             </h1>
           </div>
 
-          {/* Navigation Links */}
+          {/* Links */}
           <div className="flex space-x-8">
             {navItems.map((item) => {
               const Icon = item.icon;

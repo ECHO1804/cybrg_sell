@@ -81,10 +81,10 @@ const PartsCatalog = () => {
    
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-cyan-400 mb-2">Parts Catalog</h1>
-        <p className="text-gray-400">Browse and customize cyborg enhancements</p>
+        <p className="text-gray-400">Browse and find the cyborg part you need or want to buy!</p>
       </div>
 
-      {/* Search and Filters */}
+      {/* search */}
       <div className="bg-slate-800/50 rounded-lg p-6 mb-8 border border-slate-700">
         <div className="flex flex-col md:flex-row gap-4">
     
@@ -112,7 +112,7 @@ const PartsCatalog = () => {
             ))}
           </select>
 
-          {/* Quality Filter */}
+          {/* quality filter */}
           <select
             value={selectedQuality}
             onChange={(e) => setSelectedQuality(e.target.value)}
@@ -128,19 +128,19 @@ const PartsCatalog = () => {
         </div>
       </div>
 
-      {/* Parts Grid */}
+      {/* grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredParts.map(part => (
           <div
             key={part.id}
             className="bg-slate-800/50 rounded-lg overflow-hidden border border-slate-700 hover:border-cyan-500/50 transition-all duration-200 hover:transform hover:scale-105"
           >
-            {/* Part Image */}
+            {/*Image */}
             <div className="h-48 bg-slate-700 flex items-center justify-center">
               <span className="text-gray-400">Part Image</span>
             </div>
 
-            {/* Part Info */}
+            {/*info */}
             <div className="p-6">
               <div className="flex justify-between items-start mb-2">
                 <h3 className="text-xl font-semibold text-white">{part.name}</h3>
@@ -168,14 +168,14 @@ const PartsCatalog = () => {
               </div>
 
               <button className="w-full bg-cyan-600 hover:bg-cyan-700 text-white py-2 px-4 rounded-lg transition-colors duration-200 font-medium">
-                Customize & Add to Cart
+                Add to Cart
               </button>
             </div>
           </div>
         ))}
       </div>
 
-      {/* Empty State */}
+      {/* if no items */}
       {filteredParts.length === 0 && (
         <div className="text-center py-12">
           <FiFilter className="w-16 h-16 text-gray-600 mx-auto mb-4" />
@@ -188,3 +188,4 @@ const PartsCatalog = () => {
 };
 
 export default PartsCatalog;
+

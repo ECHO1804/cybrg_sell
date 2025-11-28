@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import CyborgLayout from './components/CyborgLayout';
-import { FiTrash2, FiAlertTriangle, FiCheck, FiShoppingBag } from 'react-icons/fi';
+import { FiTrash2, FiShoppingBag } from 'react-icons/fi';
 
 // Mock cart data
 const mockCartItems = [
@@ -21,7 +21,6 @@ const mockCartItems = [
       { perk: { name: 'Enhanced Durability', price: 200 } }
     ],
     calculated_price: 3150,
-    compatibility_warnings: ['Verify neural interface compatibility']
   },
   {
     id: 2,
@@ -36,7 +35,6 @@ const mockCartItems = [
     ],
     selected_perks: [],
     calculated_price: 1650,
-    compatibility_warnings: []
   }
 ];
 
@@ -129,20 +127,7 @@ const ShoppingCart = () => {
                 </div>
               )}
 
-              {/* Compatibility Warnings */}
-              {item.compatibility_warnings.length > 0 && (
-                <div className="mb-4 p-3 bg-amber-500/20 border border-amber-500/30 rounded-lg">
-                  <div className="flex items-center space-x-2 text-amber-300">
-                    <FiAlertTriangle className="w-4 h-4" />
-                    <span className="text-sm font-medium">Compatibility Notes</span>
-                  </div>
-                  <ul className="mt-2 space-y-1">
-                    {item.compatibility_warnings.map((warning, index) => (
-                      <li key={index} className="text-amber-200 text-sm">{warning}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
+             
 
               {/* Item Total */}
               <div className="flex justify-between items-center pt-4 border-t border-slate-700">
@@ -181,13 +166,6 @@ const ShoppingCart = () => {
               </div>
             </div>
 
-            {/* Compatibility Check */}
-            <div className="mb-6 p-3 bg-green-500/20 border border-green-500/30 rounded-lg">
-              <div className="flex items-center space-x-2 text-green-400">
-                <FiCheck className="w-4 h-4" />
-                <span className="text-sm font-medium">All systems compatible</span>
-              </div>
-            </div>
 
             <button className="w-full bg-cyan-600 hover:bg-cyan-700 text-white py-3 px-4 rounded-lg font-semibold transition-colors duration-200">
               Proceed to Checkout
