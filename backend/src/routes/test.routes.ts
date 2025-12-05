@@ -1,21 +1,22 @@
-import { Router } from 'express';
-import { supabase } from '../config/supabase';
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
 
+dotenv.config();
 
-const router = Router();
+import authRoutes from '../routes/auth.rotes';
+import sellerRoutes from '../routes/seller.routes';
+import fileRoutes from '../routes/file.routes';
+//import testRoutes from '../routes/test.routes';
 
-// Test Supabase connection
-router.get('/db', async (req, res) => {
-  const { data, error } = await supabase.from('Seller').select('*').limit(1);
+const app = express();
+app.use(cors());
+app.use(express.json());
 
-  if (error) {
-    return res.status(500).json({ message: 'Supabase connection FAILED', error });
-  }
+app.use('/api/auth', authRoutes);
+app.use('/api/seller', sellerRoutes);
+app.use('/api/files', fileRoutes);
+//app.use('/api/test', testRoutes);
 
-  return res.json({
-    message: 'Supabase connection SUCCESS',
-    exampleData: data
-  });
-});
-
-export default router;
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

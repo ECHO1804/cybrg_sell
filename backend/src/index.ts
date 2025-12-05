@@ -13,6 +13,7 @@ app.use(express.json());
 
 // Routes
 app.use('/api/test', testRoutes);
+app.use('/api',)
 
 // Server
 const PORT = process.env.PORT || 3000;
