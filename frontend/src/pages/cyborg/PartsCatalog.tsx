@@ -1,8 +1,9 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import CyborgLayout from './components/CyborgLayout';
 import { FiSearch, FiFilter } from 'react-icons/fi';
 
-// Mock dataas
+// Mock data
 const mockParts = [
   {
     id: 1,
@@ -39,7 +40,7 @@ const mockParts = [
     quality_tier: 'premium' as const,
     rating: 4.6,
     reviews_count: 67,
-    images: ['/api/placeholder/300/200'],
+    images: ['api/placeholder/300/200'],
     available_attachments_slot: 2,
     available_perks_slot: 2
   }
@@ -63,6 +64,7 @@ const PartsCatalog = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [selectedQuality, setSelectedQuality] = useState<string>('all');
+  const navigate = useNavigate();
 
   const categories = ['all', 'arm', 'leg', 'eye', 'torso', 'organ'];
   const qualities = ['all', 'cheap', 'standard', 'premium'];
@@ -76,18 +78,20 @@ const PartsCatalog = () => {
     return matchesSearch && matchesCategory && matchesQuality;
   });
 
+  const handlePartClick = (partId: number) => {
+    navigate(`/cyborg/parts/${partId}`);
+  };
+
   return (
     <CyborgLayout cartItemsCount={0}>
-   
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-cyan-400 mb-2">Parts Catalog</h1>
         <p className="text-gray-400">Browse and find the cyborg part you need or want to buy!</p>
       </div>
 
-      {/* search */}
+      {/* Search and Filters */}
       <div className="bg-slate-800/50 rounded-lg p-6 mb-8 border border-slate-700">
         <div className="flex flex-col md:flex-row gap-4">
-    
           <div className="flex-1 relative">
             <FiSearch className="absolute left-3 top-3 text-gray-400 w-5 h-5" />
             <input
@@ -112,7 +116,6 @@ const PartsCatalog = () => {
             ))}
           </select>
 
-          {/* quality filter */}
           <select
             value={selectedQuality}
             onChange={(e) => setSelectedQuality(e.target.value)}
@@ -128,19 +131,20 @@ const PartsCatalog = () => {
         </div>
       </div>
 
-      {/* grid */}
+      {/* Parts Grid - Entire card is clickable */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filteredParts.map(part => (
           <div
             key={part.id}
-            className="bg-slate-800/50 rounded-lg overflow-hidden border border-slate-700 hover:border-cyan-500/50 transition-all duration-200 hover:transform hover:scale-105"
+            onClick={() => handlePartClick(part.id)}
+            className="bg-slate-800/50 rounded-lg overflow-hidden border border-slate-700 hover:border-cyan-500/50 transition-all duration-200 hover:transform hover:scale-105 cursor-pointer"
           >
-            {/*Image */}
+            {/* Part Image */}
             <div className="h-48 bg-slate-700 flex items-center justify-center">
               <span className="text-gray-400">Part Image</span>
             </div>
 
-            {/*info */}
+            {/* Part Info */}
             <div className="p-6">
               <div className="flex justify-between items-start mb-2">
                 <h3 className="text-xl font-semibold text-white">{part.name}</h3>
@@ -167,15 +171,15 @@ const PartsCatalog = () => {
                 <span>Perks: {part.available_perks_slot}</span>
               </div>
 
-              <button className="w-full bg-cyan-600 hover:bg-cyan-700 text-white py-2 px-4 rounded-lg transition-colors duration-200 font-medium">
-                Add to Cart
-              </button>
+              <div className="text-center text-sm text-cyan-400 font-medium">
+                Click to view details & customize
+              </div>
             </div>
           </div>
         ))}
       </div>
 
-      {/* if no items */}
+      {/* Empty State */}
       {filteredParts.length === 0 && (
         <div className="text-center py-12">
           <FiFilter className="w-16 h-16 text-gray-600 mx-auto mb-4" />
@@ -188,4 +192,3 @@ const PartsCatalog = () => {
 };
 
 export default PartsCatalog;
-
