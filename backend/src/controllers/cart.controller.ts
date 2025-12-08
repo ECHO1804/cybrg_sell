@@ -1,43 +1,43 @@
-import cart from "../data/cart.json";
+import { Request, Response } from 'express';
+import * as cartService from '../services/cart.service';
 
-export const getCart = (req, res) => {
-  res.json(cart);
-};
-
-export const addToCart = (req, res) => {
-  const { id, name, price, quantity } = req.body;
-  const existingItem = cart.find(item => item.id === id);
-  
-  if (existingItem) {
-    existingItem.quantity += quantity;
-  } else {
-    cart.push({ id, name, price, quantity });
-  }
-  
-  res.json(cart);
-};
-
-export const deleteFromCart = (req, res) => {
-  const id = Number(req.params.id);
-  const index = cart.findIndex(item => item.id === id);
-  
-  if (index !== -1) {
-    cart.splice(index, 1);
-    res.json({ message: "Item deleted", cart });
-  } else {
-    res.status(404).json({ message: "Item not found" });
-  }
-};
-
-export const updateCart = (req, res) => {
-  const id = Number(req.params.id);
-  const { quantity } = req.body;
-  const item = cart.find(item => item.id === id);
-  
-  if (item) {
-    item.quantity = quantity;
+export const getCart = async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).user?.id;
+    const cart = await cartService.getCart(userId);
     res.json(cart);
-  } else {
-    res.status(404).json({ message: "Item not found" });
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to load cart' });
+  }
+};
+
+export const addToCart = async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).user?.id;
+    const payload = { ...req.body, userId };
+    const item = await cartService.addToCart(payload);
+    res.status(201).json(item);
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to add to cart' });
+  }
+};
+
+export const deleteFromCart = async (req: Request, res: Response) => {
+  try {
+    const ok = await cartService.deleteFromCart(req.params.id);
+    if (!ok) return res.status(404).json({ message: 'Cart item not found' });
+    res.json({ message: 'Deleted' });
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to delete cart item' });
+  }
+};
+
+export const updateCart = async (req: Request, res: Response) => {
+  try {
+    const updated = await cartService.updateCart(req.params.id, req.body);
+    if (!updated) return res.status(404).json({ message: 'Cart item not found' });
+    res.json(updated);
+  } catch (err) {
+    res.status(500).json({ message: 'Failed to update cart item' });
   }
 };
