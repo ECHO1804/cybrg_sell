@@ -1,10 +1,13 @@
 import { Router } from "express";
-import orders from "../data/orders.json";
+import { getOrders, getOrderById, createOrder, updateOrder, deleteOrder } from "../controllers/orders.controller";
+import { authMiddleware } from "../middleware/auth.middleware";
 
 const router = Router();
 
-router.get("/", (req, res) => {
-  res.json(orders);
-});
+router.get("/", getOrders);
+router.get("/:id", getOrderById);
+router.post("/", authMiddleware, createOrder);
+router.put("/:id", authMiddleware, updateOrder);
+router.delete("/:id", authMiddleware, deleteOrder);
 
 export default router;

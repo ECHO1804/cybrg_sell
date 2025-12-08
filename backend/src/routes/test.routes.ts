@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-import authRoutes from '../routes/auth.rotes';
+import authRoutes from './auth.routes';
 import sellerRoutes from '../routes/seller.routes';
 import fileRoutes from '../routes/file.routes';
 //import testRoutes from '../routes/test.routes';
