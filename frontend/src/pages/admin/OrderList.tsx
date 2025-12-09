@@ -3,10 +3,10 @@ import AdminLayout from './components/AdminLayout';
 
 const OrderList = () => {
   const orders = [
-    { id: 'CYB-001', cyborg: 'RX-78', type: 'Maintenance', status: 'Processing', date: '2024-01-15', priority: 'High' },
-    { id: 'CYB-002', cyborg: 'T-800', type: 'Upgrade', status: 'Completed', date: '2024-01-14', priority: 'Medium' },
-    { id: 'CYB-003', cyborg: 'HK-47', type: 'Repair', status: 'Pending', date: '2024-01-13', priority: 'Critical' },
-    { id: 'CYB-004', cyborg: 'EVA-01', type: 'Maintenance', status: 'Completed', date: '2024-01-12', priority: 'Low' },
+    { id: 'CYB-001', cyborg: 'RX-78', status: 'Processing', date: '2024-01-15', priority: 'High' },
+    { id: 'CYB-002', cyborg: 'T-800', status: 'Completed', date: '2024-01-14', priority: 'Medium' },
+    { id: 'CYB-003', cyborg: 'HK-47', status: 'Pending', date: '2024-01-13', priority: 'Critical' },
+    { id: 'CYB-004', cyborg: 'EVA-01', status: 'Completed', date: '2024-01-12', priority: 'Low' },
   ];
 
   const getStatusIcon = (status: string) => {
@@ -51,7 +51,6 @@ const OrderList = () => {
         <div className="grid grid-cols-12 gap-4 p-4 border-b border-slate-700/50 text-sm text-gray-400 font-medium bg-gradient-to-r from-slate-900/80 to-slate-800/60">
           <div className="col-span-2 drop-shadow-[0_0_3px_rgba(6,182,212,0.5)]">ORDER ID</div>
           <div className="col-span-2 drop-shadow-[0_0_3px_rgba(6,182,212,0.5)]">CYBORG</div>
-          <div className="col-span-2 drop-shadow-[0_0_3px_rgba(6,182,212,0.5)]">TYPE</div>
           <div className="col-span-2 drop-shadow-[0_0_3px_rgba(6,182,212,0.5)]">STATUS</div>
           <div className="col-span-2 drop-shadow-[0_0_3px_rgba(6,182,212,0.5)]">DATE</div>
           <div className="col-span-2 drop-shadow-[0_0_3px_rgba(6,182,212,0.5)]">ACTIONS</div>
@@ -65,7 +64,6 @@ const OrderList = () => {
                 <div className="font-mono text-cyan-300 font-medium drop-shadow-[0_0_8px_rgba(6,182,212,0.5)]">{order.id}</div>
               </div>
               <div className="col-span-2 text-white drop-shadow-[0_0_3px_rgba(6,182,212,0.3)]">{order.cyborg}</div>
-              <div className="col-span-2 text-gray-300 drop-shadow-[0_0_3px_rgba(6,182,212,0.2)]">{order.type}</div>
               <div className="col-span-2">
                 <div className="flex items-center gap-2">
                   {getStatusIcon(order.status)}
