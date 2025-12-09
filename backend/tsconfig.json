@@ -1,16 +1,39 @@
 {
-  // Visit https://aka.ms/tsconfig to read more about this file
   "compilerOptions": {
-    "target": "es2020",
-    "module": "commonjs",
+    // File Layout (BOTH)
     "rootDir": "./src",
     "outDir": "./dist",
 
-    "strict": true,
+    // Environment (BOTH)
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "esnext",
+
+    // SEQUELIZE DECORATORS (YOURS - CRITICAL)
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+
+    // IMPORTS (BOTH)
     "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "skipLibCheck": true,
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
-  }
+
+    // STRICT TYPE CHECKING (BOTH + YOURS)
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+
+    // OUTPUTS (YOURS)
+    "sourceMap": true,
+    "declaration": true,
+    "declarationMap": true,
+
+    // ADVANCED (YOURS - optional)
+    "isolatedModules": true,
+    "verbatimModuleSyntax": true
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
 }
