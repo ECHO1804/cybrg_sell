@@ -1,10 +1,11 @@
-import orders from "../data/orders.json";
+import type { Request, Response } from 'express';
+import orders from "../data/orders.json" assert { type: "json" };
 
-export const getOrders = (req, res) => {
+export const getOrders = (req: Request, res: Response) => {
   res.json(orders);
 };
 
-export const getOrderById = (req, res) => {
+export const getOrderById = (req: Request, res: Response) => {
   const id = Number(req.params.id);
   const order = orders.find(o => o.id === id);
   
@@ -15,13 +16,13 @@ export const getOrderById = (req, res) => {
   }
 };
 
-export const createOrder = (req, res) => {
+export const createOrder = (req: Request, res: Response) => {
   const newOrder = { id: Date.now(), ...req.body };
   orders.push(newOrder);
   res.json(newOrder);
 };
 
-export const updateOrder = (req, res) => {
+export const updateOrder = (req: Request, res: Response) => {
   const id = Number(req.params.id);
   const order = orders.find(o => o.id === id);
   
@@ -33,7 +34,7 @@ export const updateOrder = (req, res) => {
   }
 };
 
-export const deleteOrder = (req, res) => {
+export const deleteOrder = (req: Request, res: Response) => {
   const id = Number(req.params.id);
   const index = orders.findIndex(o => o.id === id);
   
