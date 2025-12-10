@@ -6,6 +6,8 @@ const router = Router();
 
 router.get('/', getOrders);
 router.get('/:id', getOrderById);
+
+//portected routes
 router.post('/', authMiddleware, createOrder);
 router.put('/:id', authMiddleware, updateOrder);
 router.delete('/:id', authMiddleware, deleteOrder);
