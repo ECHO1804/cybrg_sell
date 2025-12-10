@@ -38,7 +38,7 @@ const Navigation = () => {
             </a>
             
           
-            <a href="#" className="nav-link flex items-center space-x-2 group">
+            <a href="/admin/products" className="nav-link flex items-center space-x-2 group">
               <FiShoppingBag className="text-lg group-hover:scale-110 transition-transform" />
               <span>Products</span>
             </a>
