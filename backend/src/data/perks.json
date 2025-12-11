@@ -1,0 +1,10 @@
+[
+  { "id": 1, "name": "Speed Boost", "price": 100, "tier": "common" },
+  { "id": 2, "name": "Durability+", "price": 150, "tier": "uncommon" },
+  { "id": 3, "name": "Energy Efficiency", "price": 120, "tier": "common" },
+  { "id": 4, "name": "Stealth Coating", "price": 200, "tier": "rare" },
+  { "id": 5, "name": "Processing Boost", "price": 180, "tier": "uncommon" },
+  { "id": 6, "name": "Extended Lifespan", "price": 250, "tier": "rare" },
+  { "id": 7, "name": "Thermal Regulation", "price": 140, "tier": "common" },
+  { "id": 8, "name": "Enhanced Perception", "price": 160, "tier": "uncommon" }
+]

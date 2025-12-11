@@ -98,5 +98,205 @@
       "armor_rating": "Level IV",
       "warranty": "5 years"
     }
+  },
+  {
+    "id": "PRT-006",
+    "name": "Synthetic Heart",
+    "category": "Organ",
+    "description": "Advanced life support and energy system",
+    "base_price": 4200,
+    "quality_tier": "premium",
+    "rating": 4.8,
+    "reviews_count": 178,
+    "images": ["/api/placeholder/400/300"],
+    "available_attachments_slot": 2,
+    "available_perks_slot": 4,
+    "stock": 6,
+    "specifications": {
+      "efficiency": "98%",
+      "lifespan": "50 years",
+      "power_output": "High",
+      "warranty": "15 years"
+    }
+  },
+  {
+    "id": "PRT-007",
+    "name": "Hydraulic Arm",
+    "category": "Arm",
+    "description": "Industrial strength arm for heavy lifting",
+    "base_price": 1900,
+    "quality_tier": "standard",
+    "rating": 4.5,
+    "reviews_count": 142,
+    "images": ["/api/placeholder/400/300"],
+    "available_attachments_slot": 4,
+    "available_perks_slot": 2,
+    "stock": 18,
+    "specifications": {
+      "weight": "3.5 kg",
+      "lift_capacity": "800 kg",
+      "material": "Steel Alloy",
+      "warranty": "3 years"
+    }
+  },
+  {
+    "id": "PRT-008",
+    "name": "Cybernetic Liver",
+    "category": "Organ",
+    "description": "Toxin filtering and metabolic enhancer",
+    "base_price": 3500,
+    "quality_tier": "premium",
+    "rating": 4.7,
+    "reviews_count": 95,
+    "images": ["/api/placeholder/400/300"],
+    "available_attachments_slot": 3,
+    "available_perks_slot": 2,
+    "stock": 10,
+    "specifications": {
+      "filtration_rate": "Ultra-high",
+      "efficiency": "95%",
+      "compatibility": "Universal",
+      "warranty": "8 years"
+    }
+  },
+  {
+    "id": "PRT-009",
+    "name": "Power Cell",
+    "category": "Organ",
+    "description": "Enhanced energy storage and distribution",
+    "base_price": 1600,
+    "quality_tier": "standard",
+    "rating": 4.4,
+    "reviews_count": 167,
+    "images": ["/api/placeholder/400/300"],
+    "available_attachments_slot": 1,
+    "available_perks_slot": 1,
+    "stock": 25,
+    "specifications": {
+      "capacity": "5000 mAh",
+      "charge_time": "2 hours",
+      "lifespan": "10 years",
+      "warranty": "5 years"
+    }
+  },
+  {
+    "id": "PRT-010",
+    "name": "Mobility Boost",
+    "category": "Leg",
+    "description": "Enhanced speed and agility system",
+    "base_price": 1200,
+    "quality_tier": "standard",
+    "rating": 4.6,
+    "reviews_count": 134,
+    "images": ["/api/placeholder/400/300"],
+    "available_attachments_slot": 2,
+    "available_perks_slot": 3,
+    "stock": 22,
+    "specifications": {
+      "speed_increase": "40%",
+      "agility_boost": "High",
+      "weight": "1.8 kg",
+      "warranty": "4 years"
+    }
+  },
+  {
+    "id": "PRT-011",
+    "name": "Sensory Array",
+    "category": "Organ",
+    "description": "Multi-spectrum vision and detection suite",
+    "base_price": 2800,
+    "quality_tier": "premium",
+    "rating": 4.8,
+    "reviews_count": 112,
+    "images": ["/api/placeholder/400/300"],
+    "available_attachments_slot": 3,
+    "available_perks_slot": 2,
+    "stock": 14,
+    "specifications": {
+      "detection_range": "500m",
+      "spectrum": "Full",
+      "resolution": "12K",
+      "warranty": "6 years"
+    }
+  },
+  {
+    "id": "PRT-012",
+    "name": "Processing Core",
+    "category": "Organ",
+    "description": "Advanced computing and analysis unit",
+    "base_price": 3200,
+    "quality_tier": "premium",
+    "rating": 4.9,
+    "reviews_count": 189,
+    "images": ["/api/placeholder/400/300"],
+    "available_attachments_slot": 2,
+    "available_perks_slot": 4,
+    "stock": 7,
+    "specifications": {
+      "processing_power": "15 THz",
+      "cores": "128",
+      "memory": "750 TB",
+      "warranty": "10 years"
+    }
+  },
+  {
+    "id": "PRT-013",
+    "name": "Stealth Arm",
+    "category": "Arm",
+    "description": "Low-profile arm with radar absorbing materials",
+    "base_price": 2800,
+    "quality_tier": "premium",
+    "rating": 4.7,
+    "reviews_count": 98,
+    "images": ["/api/placeholder/400/300"],
+    "available_attachments_slot": 3,
+    "available_perks_slot": 2,
+    "stock": 9,
+    "specifications": {
+      "stealth_rating": "Level V",
+      "weight": "2.1 kg",
+      "material": "Composite Alloy",
+      "warranty": "5 years"
+    }
+  },
+  {
+    "id": "PRT-014",
+    "name": "Jump Boost Leg",
+    "category": "Leg",
+    "description": "Enhanced jumping and impact absorption",
+    "base_price": 2500,
+    "quality_tier": "premium",
+    "rating": 4.6,
+    "reviews_count": 145,
+    "images": ["/api/placeholder/400/300"],
+    "available_attachments_slot": 3,
+    "available_perks_slot": 2,
+    "stock": 11,
+    "specifications": {
+      "jump_height": "10m",
+      "impact_absorption": "95%",
+      "weight": "2.9 kg",
+      "warranty": "4 years"
+    }
+  },
+  {
+    "id": "PRT-015",
+    "name": "Armored Torso",
+    "category": "Torso",
+    "description": "Heavy-duty torso with ballistic protection",
+    "base_price": 3500,
+    "quality_tier": "premium",
+    "rating": 4.8,
+    "reviews_count": 176,
+    "images": ["/api/placeholder/400/300"],
+    "available_attachments_slot": 4,
+    "available_perks_slot": 3,
+    "stock": 8,
+    "specifications": {
+      "weight": "6.5 kg",
+      "armor_rating": "Level V",
+      "material": "Reinforced Steel",
+      "warranty": "5 years"
+    }
   }
 ]

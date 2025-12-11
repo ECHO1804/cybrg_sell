@@ -1,49 +1,30 @@
 [
-    {
-    "orders": [
-      {
-        "id": "ORD-001",
-        "status": "completed",
-        "total_price": 3500,
-        "items_count": 2,
-        "created_at": "2024-01-15T10:30:00Z",
-        "delivery_info": {
-          "address": "Neural Quarter, Sector 7",
-          "estimated_delivery": "2024-01-20"
-        }
-      },
-      {
-        "id": "ORD-002",
-        "status": "pending",
-        "total_price": 1650,
-        "items_count": 1,
-        "created_at": "2024-01-18T14:20:00Z",
-        "delivery_info": {
-          "address": "Cybernetic District, Sector 3",
-          "estimated_delivery": "2024-01-25"
-        }
-      },
-      {
-        "id": "ORD-003",
-        "status": "cancelled",
-        "total_price": 2800,
-        "items_count": 1,
-        "created_at": "2024-01-10T09:15:00Z",
-        "delivery_info": {
-          "address": "Bio-Tech Hub, Sector 5",
-          "estimated_delivery": "2024-01-18"
-        }
-      }
+  {
+    "id": 1,
+    "cart_item_id": 101,
+    "userId": "user-123",
+    "partId": "PRT-001",
+    "quantity": 1,
+    "attachments": [
+      { "id": 1, "name": "Laser Emitter", "price": 200 },
+      { "id": 4, "name": "Shield Projector", "price": 150 }
     ],
-    "order_items": [
-      {
-        "id": 1,
-        "userId": "test-user-1",
-        "partId": 1,
-        "quantity": 1,
-        "attachments": [],
-        "perks": []
-      }
+    "perks": [
+      { "id": 1, "name": "Speed Boost", "price": 100 }
+    ]
+  },
+  {
+    "id": 2,
+    "cart_item_id": 102,
+    "userId": "user-123",
+    "partId": "PRT-003",
+    "quantity": 1,
+    "attachments": [
+      { "id": 2, "name": "Hydraulic Boost", "price": 300 }
+    ],
+    "perks": [
+      { "id": 2, "name": "Durability+", "price": 150 },
+      { "id": 3, "name": "Energy Efficiency", "price": 120 }
     ]
   }
 ]
