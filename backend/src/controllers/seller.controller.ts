@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import { getAllSellers, createSeller, deleteSeller } from '../services/seller.service';
 
 export const getSellers = async (req: Request, res: Response) => {

@@ -2,17 +2,15 @@
   "name": "cybrg-sell-backend",
   "version": "1.0.0",
   "main": "index.js",
-  "type": "module",
+  "type": "module",  
+  
   "scripts": {
-    "dev": "concurrently \"npm run dev:api\" \"npm run db:test\"",
-    "dev:api": "tsx watch src/index.ts",
-    "db:test": "tsx watch src/db-test.ts",
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "tsx src/index.ts",
     "db:migrate": "sequelize-cli db:migrate",
     "db:seed": "sequelize-cli db:seed:all",
-    "db:reset": "sequelize-cli db:migrate:undo:all && npm run db:migrate && npm run db:seed",
-    "build": "tsc",
-    "start": "tsx dist/index.js",
-    "type-check": "tsc --noEmit"
+    "db:reset": "sequelize-cli db:migrate:undo:all && npm run db:migrate && npm run db:seed"
   },
   "keywords": [],
   "author": "",

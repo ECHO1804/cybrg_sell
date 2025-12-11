@@ -1,6 +1,7 @@
 [
   {
     "id": "ORD-001",
+    "user_id": "user-123",
     "status": "completed",
     "total_price": 3500,
     "items_count": 2,
@@ -8,10 +9,12 @@
     "delivery_info": {
       "address": "Neural Quarter, Sector 7",
       "estimated_delivery": "2024-01-20"
-    }
+    },
+    "items": []
   },
   {
     "id": "ORD-002",
+    "user_id": "user-123",
     "status": "pending",
     "total_price": 1650,
     "items_count": 1,
@@ -19,10 +22,12 @@
     "delivery_info": {
       "address": "Cybernetic District, Sector 3",
       "estimated_delivery": "2024-01-25"
-    }
+    },
+    "items": []
   },
   {
     "id": "ORD-003",
+    "user_id": "user-123",
     "status": "cancelled",
     "total_price": 2800,
     "items_count": 1,
@@ -30,6 +35,7 @@
     "delivery_info": {
       "address": "Bio-Tech Hub, Sector 5",
       "estimated_delivery": "2024-01-18"
-    }
+    },
+    "items": []
   }
 ]

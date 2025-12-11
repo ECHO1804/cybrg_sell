@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import type { Request, Response } from 'express';
 import { getSampleFile, saveFile } from '../services/file.service';
 
 export const downloadFile = (req: Request, res: Response) => {
