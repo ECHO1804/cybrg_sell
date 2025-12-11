@@ -1,28 +1,76 @@
-import { Table, Column, Model, DataType, PrimaryKey, ForeignKey } from 'sequelize-typescript';
-import { Seller } from './Seller.js';
+'use strict';
 
-@Table({ tableName: 'attachments', timestamps: true })
-export class Attachment extends Model {
-  @PrimaryKey
-  @Column(DataType.UUID)
+import {
+  Model,
+  DataTypes,
+  Sequelize,
+  InferAttributes,
+  InferCreationAttributes,
+} from 'sequelize';
+import type { Seller } from './Seller.js';
+
+export class Attachment extends Model<
+  InferAttributes<Attachment>,
+  InferCreationAttributes<Attachment>
+> {
   declare id: string;
-
-  @ForeignKey(() => Seller)
-  @Column(DataType.UUID)
   declare seller_id: string;
-
-  @Column(DataType.TEXT)
   declare name: string;
-
-  @Column(DataType.DECIMAL(10, 2))
   declare price: number;
-
-  @Column(DataType.TEXT)
   declare image: string;
-
-  @Column(DataType.TEXT)
   declare description: string;
-
-  @Column(DataType.DATE)
   declare created_at: Date;
+
+  declare seller?: Seller;
+
+  static associate(models: any) {
+    this.belongsTo(models.Seller, {
+      foreignKey: 'seller_id',
+      as: 'seller',
+    });
+  }
+}
+
+export default function initAttachment(
+  sequelize: Sequelize
+): typeof Attachment {
+  Attachment.init(
+    {
+      id: {
+        type: DataTypes.UUID,
+        primaryKey: true,
+      },
+      seller_id: {
+        type: DataTypes.UUID,
+        allowNull: false,
+      },
+      name: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
+      price: {
+        type: DataTypes.DECIMAL(10, 2),
+        allowNull: false,
+      },
+      image: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
+      description: {
+        type: DataTypes.TEXT,
+        allowNull: false,
+      },
+      created_at: {
+        type: DataTypes.DATE,
+      },
+    },
+    {
+      sequelize,
+      modelName: 'Attachment',
+      tableName: 'attachments',
+      timestamps: false,
+    }
+  );
+
+  return Attachment;
 }

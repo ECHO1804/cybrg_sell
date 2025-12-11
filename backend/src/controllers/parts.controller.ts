@@ -1,4 +1,4 @@
-import type { Request, Response } from 'express';
+import { Request, Response } from 'express';
 import * as partsService from '../services/parts.service';
 
 export const getAllParts = async (req: Request, res: Response) => {

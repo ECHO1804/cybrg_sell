@@ -1,6 +1,6 @@
-import type { Request, Response } from 'express';
-import { registerUser, loginUser } from '../services/auth.services.js';
-import { signToken } from '../utils/jwt.js';
+import { Request, Response } from 'express';
+import { registerUser, loginUser } from '../services/auth.services';
+import { signToken } from '../utils/jwt';
 import bcrypt from 'bcryptjs';
 
 export const register = async (req: Request, res: Response) => {
