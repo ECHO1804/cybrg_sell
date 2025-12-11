@@ -3,6 +3,7 @@ import { getOrders, getOrderById, createOrder, updateOrder, deleteOrder } from '
 import { authMiddleware } from '../middleware/auth.middleware';
 
 const router = Router();
+router.use(authMiddleware);
 
 router.get('/', getOrders);
 router.get('/:id', getOrderById);

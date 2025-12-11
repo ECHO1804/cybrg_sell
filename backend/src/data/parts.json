@@ -60,6 +60,27 @@
       "images": ["/api/placeholder/300/200"],
       "available_attachments_slot": 2,
       "available_perks_slot": 1
-    }
+    },
+    {
+      "id": "PRT-003",
+      "name": "Titanium Leg",
+      "category": "Leg",
+      "description": "Durable leg with hydraulic boost system",
+      "base_price": 2200,
+      "quality_tier": "standard",
+      "rating": 4.6,
+      "reviews_count": 89,
+      "images": ["/api/placeholder/400/300"],
+      "available_attachments_slot": 4,
+      "available_perks_slot": 2,
+      "stock": 12,
+      "specifications": {
+        "weight": "3.1 kg",
+        "material": "Titanium",
+        "max_load": "500 kg",
+        "warranty": "3 years"
+      }
+    },
+    ... all other PRT-004 → PRT-015 products ...
   ]
 }

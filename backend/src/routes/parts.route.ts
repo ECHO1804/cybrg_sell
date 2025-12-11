@@ -6,6 +6,8 @@ const router = Router();
 
 router.get('/', getAllParts);
 router.get('/:id', getPartById);
+
+// Protected routes 
 router.post('/', authMiddleware, createPart);
 router.put('/:id', authMiddleware, updatePart);
 router.delete('/:id', authMiddleware, deletePart);

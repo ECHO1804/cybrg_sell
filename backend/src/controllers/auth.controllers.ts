@@ -1,30 +1,123 @@
+import type { Request, Response } from 'express';
+import { registerUser, loginUser, getUserById } from '../services/auth.services';
 import { Request, Response } from 'express';
 import { registerUser, loginUser } from '../services/auth.services';
 import { signToken } from '../utils/jwt';
 import bcrypt from 'bcryptjs';
 
 export const register = async (req: Request, res: Response) => {
-  const { email, password } = req.body;
+  try {
+    const { email, password, firstName, lastName, phone } = req.body;
 
-  const { data, error } = await registerUser(email, password);
+    // Validation
+    if (!email || !password) {
+      return res.status(400).json({ 
+        message: 'Email and password are required' 
+      });
+    }
 
-  if (error) return res.status(400).json(error);
+    if (password.length < 6) {
+      return res.status(400).json({ 
+        message: 'Password must be at least 6 characters' 
+      });
+    }
 
-  return res.json({ message: "Registered successfully", data });
+    const { data, error } = await registerUser({
+      email,
+      password,
+      firstName,
+      lastName,
+      phone
+    });
+
+    if (error) {
+      return res.status(400).json(error);
+    }
+
+    // Generate token
+    const token = signToken({ 
+      id: data!.id, 
+      email: data!.email 
+    });
+
+    return res.status(201).json({ 
+      message: 'Registration successful',
+      user: data,
+      token 
+    });
+  } catch (err) {
+    return res.status(500).json({ 
+      message: 'Registration failed' 
+    });
+  }
 };
 
 export const login = async (req: Request, res: Response) => {
-  const { email, password } = req.body;
+  try {
+    const { email, password } = req.body;
 
-  const { data, error } = await loginUser(email);
+    // Validation
+    if (!email || !password) {
+      return res.status(400).json({ 
+        message: 'Email and password are required' 
+      });
+    }
 
-  if (error || !data) return res.status(400).json({ message: "User not found" });
+    const { data, error } = await loginUser(email);
 
-  const valid = await bcrypt.compare(password, data.password);
+    if (error || !data) {
+      return res.status(400).json({ 
+        message: 'Invalid email or password' 
+      });
+    }
 
-  if (!valid) return res.status(403).json({ message: "Wrong password" });
+    // Verify password
+    const isValidPassword = await bcrypt.compare(password, data.password);
 
-  const token = signToken({ id: data.id, email: data.email });
+    if (!isValidPassword) {
+      return res.status(401).json({ 
+        message: 'Invalid email or password' 
+      });
+    }
+
+    // Generate token
+    const token = signToken({ 
+      id: data.id, 
+      email: data.email 
+    });
+
+    // Return user without password
+    const { password: _, ...userWithoutPassword } = data;
+
+    return res.json({ 
+      message: 'Login successful',
+      user: userWithoutPassword,
+      token 
+    });
+  } catch (err) {
+    return res.status(500).json({ 
+      message: 'Login failed' 
+    });
+  }
+};
+
+export const getProfile = async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).user?.id;
+
+    if (!userId) {
+      return res.status(401).json({ 
+        message: 'Unauthorized' 
+      });
+    }
+
+    const { data, error } = await getUserById(userId);
+
+    if (error || !data) {
+      return res.status(404).json({ 
+        message: 'User not found' 
+      });
+    }
 
   res.json({ message: "Login success", token });
 };
