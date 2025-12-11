@@ -1,121 +1,58 @@
-import { useState } from 'react';
-import { FiPackage, FiShoppingCart, FiLogOut, FiMenu, FiX, FiUser, FiShoppingBag } from 'react-icons/fi';
+import { Link, useLocation } from 'react-router-dom';
+import { FiShoppingCart, FiPackage, FiList } from 'react-icons/fi';
 
-const Navigation = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [cartItems] = useState(3); // Example cart count
+interface NavigationProps {
+  cartItemsCount: number;
+}
 
-  const handleSignOut = () => {
-    console.log('Signing out...');
-    // Cyborg sign out logic
-  };
+const Navigation = ({ cartItemsCount }: NavigationProps) => {
+  const location = useLocation();
+
+  const navItems = [
+    { path: '/cyborg/parts', label: 'Parts Catalog', icon: FiList },
+    { path: '/cyborg/cart', label: 'Shopping Cart', icon: FiShoppingCart },
+    { path: '/cyborg/orders', label: 'Orders', icon: FiPackage },
+  ];
 
   return (
-    <nav 
-      className="bg-gray-800 text-white p-[1px] rounded-b-lg bg-gradient-to-r from-cyan-500 via-blue-500 to-blue-50"
-      style={{ animation: 'glow-pulse 2s ease-in-out infinite' }}
-    >
-      <div className="bg-slate-950 rounded-b-lg">
-        <div className="h-16 container mx-auto px-4 sm:px-6 flex items-center justify-between">
+    <nav className="bg-slate-900 border-b border-cyan-500/30 shadow-lg">
+      <div className="max-w-7xl mx-auto px-4">
+        <div className="flex justify-between items-center h-16">
         
-          <a href="/cyborg" className="flex items-center space-x-3 group">
-            <div className="relative">
-              <img 
-                src="/path-to-your-logo.png"
-                alt="CYBORGMANIA Logo"
-                className="h-10 w-10 object-contain filter brightness-125 saturate-150 drop-shadow-[0_0_8px_rgba(6,182,212,0.7)] group-hover:drop-shadow-[0_0_15px_rgba(6,182,212,1)] transition-all duration-300"
-              />
-              <div className="absolute inset-0 rounded-full border border-cyan-400/50 group-hover:border-cyan-300 group-hover:scale-110 transition-all duration-500"></div>
-            </div>
-            <div className="font-bold text-xl text-cyber-glow animate-text-glow">
-              CYBORGMANIA
-            </div>
-          </a>
-
-     
-          <div className="hidden md:flex items-center space-x-6">
-        
-            <a href="/cyborg/parts" className="nav-link flex items-center space-x-2 group">
-              <FiPackage className="text-lg group-hover:scale-110 transition-transform" />
-              <span>Parts</span>
-            </a>
-            
-          
-            <a href="/cyborg/cart" className="nav-link flex items-center space-x-2 group relative">
-              <FiShoppingCart className="text-lg group-hover:scale-110 transition-transform" />
-              <span>Cart</span>
-              {cartItems > 0 && (
-                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center drop-shadow-[0_0_6px_rgba(239,68,68,0.7)]">
-                  {cartItems}
-                </span>
-              )}
-            </a>
-          
-            
-            <div className="h-6 w-px bg-gray-700"></div>
-            
-        
-            <button
-              onClick={handleSignOut}
-              className="nav-link flex items-center space-x-2 group px-4 py-2 rounded-md hover:bg-gray-800/50 transition-all duration-300"
-            >
-              <FiLogOut className="text-lg" />
-              <span>Sign Out</span>
-            </button>
+          <div className="shrink-0">
+            <h1 className="text-cyan-400 text-xl font-bold tracking-wider">
+              CYBORG PARTS
+            </h1>
           </div>
 
-        
-          <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="md:hidden p-2 rounded-md hover:bg-gray-800/50 transition-colors"
-          >
-            {isMenuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
-          </button>
+          {/* Links */}
+          <div className="flex space-x-8">
+            {navItems.map((item) => {
+              const Icon = item.icon;
+              const isActive = location.pathname === item.path;
+              
+              return (
+                <Link
+                  key={item.path}
+                  to={item.path}
+                  className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 ${
+                    isActive
+                      ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/50'
+                      : 'text-gray-300 hover:text-cyan-400 hover:bg-slate-800'
+                  }`}
+                >
+                  <Icon className="w-5 h-5" />
+                  <span className="font-medium">{item.label}</span>
+                  {item.label === 'Shopping Cart' && cartItemsCount > 0 && (
+                    <span className="bg-rose-500 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center">
+                      {cartItemsCount}
+                    </span>
+                  )}
+                </Link>
+              );
+            })}
+          </div>
         </div>
-
-       
-        {isMenuOpen && (
-          <div className="md:hidden border-t border-gray-700 px-4 py-3 bg-slate-950/95 backdrop-blur-sm">
-            <div className="space-y-3">
-          
-              <a
-                href="/cyborg/parts"
-                className="flex items-center space-x-3 px-3 py-2 rounded-md hover:bg-gray-800/50 transition-colors"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                <FiPackage />
-                <span>Parts</span>
-              </a>
-              
-         
-              <a
-                href="/cyborg/cart"
-                className="flex items-center space-x-3 px-3 py-2 rounded-md hover:bg-gray-800/50 transition-colors relative"
-                onClick={() => setIsMenuOpen(false)}
-              >
-                <FiShoppingCart />
-                <span>Cart</span>
-                {cartItems > 0 && (
-                  <span className="absolute right-3 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center drop-shadow-[0_0_6px_rgba(239,68,68,0.7)]">
-                    {cartItems}
-                  </span>
-                )}
-              </a>
-              
-
-              <button
-                onClick={() => {
-                  handleSignOut();
-                  setIsMenuOpen(false);
-                }}
-                className="w-full flex items-center space-x-3 px-3 py-2 rounded-md hover:bg-red-500/10 text-red-300 transition-colors"
-              >
-                <FiLogOut />
-                <span>Sign Out</span>
-              </button>
-            </div>
-          </div>
-        )}
       </div>
     </nav>
   );
