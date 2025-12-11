@@ -114,8 +114,8 @@ const ShoppingCart = () => {
               Browse our catalog to add cybernetic parts
             </p>
             <a 
-              href="/cyborg/parts"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-cyan-300 rounded-xl border border-cyan-500/30 hover:border-cyan-400/50 hover:shadow-[0_0_25px_rgba(6,182,212,0.5)] transition-all"
+              href="/cyborg"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-linear-to-r from-cyan-500/20 to-blue-500/20 text-cyan-300 rounded-xl border border-cyan-500/30 hover:border-cyan-400/50 hover:shadow-[0_0_25px_rgba(6,182,212,0.5)] transition-all"
             >
               <FiPackage />
               Browse Parts
@@ -154,7 +154,7 @@ const ShoppingCart = () => {
                         >
                           −
                         </button>
-                        <div className="text-xl font-bold text-white px-4 py-1 bg-slate-800/50 rounded-lg border border-cyan-500/20 min-w-[3rem] text-center shadow-[0_0_10px_rgba(6,182,212,0.3)]">
+                        <div className="text-xl font-bold text-white px-4 py-1 bg-slate-800/50 rounded-lg border border-cyan-500/20 min-w-12 text-center shadow-[0_0_10px_rgba(6,182,212,0.3)]">
                           {item.quantity}
                         </div>
                         <button
@@ -233,7 +233,7 @@ const ShoppingCart = () => {
 
      
       {cartItems.length > 0 && (
-        <div className="bg-gradient-to-br from-slate-900/60 to-slate-800/40 backdrop-blur-sm rounded-2xl border border-cyan-500/30 p-8 shadow-[0_0_40px_rgba(6,182,212,0.3)]">
+        <div className="bg-linear-to-br from-slate-900/60 to-slate-800/40 backdrop-blur-sm rounded-2xl border border-cyan-500/30 p-8 shadow-[0_0_40px_rgba(6,182,212,0.3)]">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
            
             <div>
@@ -262,14 +262,14 @@ const ShoppingCart = () => {
             <div className="flex flex-col justify-end space-y-4">
               <button
                 onClick={handlePlaceOrder}
-                className="w-full px-6 py-4 bg-gradient-to-r from-cyan-500/30 to-blue-500/30 text-white rounded-xl border border-cyan-500/40 hover:border-cyan-400/50 hover:shadow-[0_0_35px_rgba(6,182,212,0.8)] transition-all text-lg font-bold hover:scale-[1.02] active:scale-[0.98]"
+                className="w-full px-6 py-4 bg-linear-to-r from-cyan-500/30 to-blue-500/30 text-white rounded-xl border border-cyan-500/40 hover:border-cyan-400/50 hover:shadow-[0_0_35px_rgba(6,182,212,0.8)] transition-all text-lg font-bold hover:scale-[1.02] active:scale-[0.98]"
               >
                 PLACE ORDER
               </button>
               
               <a
                 href="/cyborg"
-                className="w-full px-6 py-3 bg-gradient-to-r from-slate-800/30 to-slate-700/30 text-cyan-300 rounded-xl border border-cyan-500/30 hover:border-cyan-400/50 hover:shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-all text-center hover:scale-[1.02]"
+                className="w-full px-6 py-3 bg-linear-to-r from-slate-800/30 to-slate-700/30 text-cyan-300 rounded-xl border border-cyan-500/30 hover:border-cyan-400/50 hover:shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-all text-center hover:scale-[1.02]"
               >
                 Continue Shopping
               </a>
@@ -294,12 +294,12 @@ const ShoppingCart = () => {
             backgroundSize: '4px 4px'
           }}></div>
           
-          <div className="absolute inset-0 bg-gradient-to-r from-green-500/5 via-transparent to-emerald-500/5 animate-pulse"></div>
+          <div className="absolute inset-0 bg-linear-to-r from-green-500/5 via-transparent to-emerald-500/5 animate-pulse"></div>
           
-          <div className="relative bg-gradient-to-br from-slate-900/40 to-slate-800/30 backdrop-blur-xl rounded-2xl border border-green-500/30 shadow-[0_0_80px_rgba(34,197,94,0.8)] max-w-lg w-full overflow-hidden">
-            <div className="h-1 bg-gradient-to-r from-transparent via-green-400 to-transparent animate-pulse"></div>
+          <div className="relative bg-linear-to-br from-slate-900/40 to-slate-800/30 backdrop-blur-xl rounded-2xl border border-green-500/30 shadow-[0_0_80px_rgba(34,197,94,0.8)] max-w-lg w-full overflow-hidden">
+            <div className="h-1 bg-linear-to-r from-transparent via-green-400 to-transparent animate-pulse"></div>
             
-            <div className="p-6 border-b border-green-500/20 bg-gradient-to-r from-slate-900/50 to-slate-800/40">
+            <div className="p-6 border-b border-green-500/20 bg-linear-to-r from-slate-900/50 to-slate-800/40">
               <div className="flex justify-between items-center">
                 <div>
                   <h2 className="text-2xl font-bold text-white mb-1 drop-shadow-[0_0_15px_rgba(34,197,94,0.8)]">ORDER CONFIRMED</h2>
@@ -336,13 +336,13 @@ const ShoppingCart = () => {
                   setShowSuccessModal(false);
                   setCartItems([]);
                 }}
-                className="w-full px-6 py-4 bg-gradient-to-r from-green-500/30 to-emerald-500/30 text-white rounded-xl border border-green-500/40 hover:border-green-400/50 hover:shadow-[0_0_35px_rgba(34,197,94,0.8)] transition-all text-lg font-bold hover:scale-[1.02]"
+                className="w-full px-6 py-4 bg-linear-to-r from-green-500/30 to-emerald-500/30 text-white rounded-xl border border-green-500/40 hover:border-green-400/50 hover:shadow-[0_0_35px_rgba(34,197,94,0.8)] transition-all text-lg font-bold hover:scale-[1.02]"
               >
                 CONTINUE SHOPPING
               </button>
             </div>
             
-            <div className="h-1 bg-gradient-to-r from-transparent via-green-400 to-transparent animate-pulse"></div>
+            <div className="h-1 bg-linear-to-r from-transparent via-green-400 to-transparent animate-pulse"></div>
           </div>
         </div>
       )}
@@ -357,12 +357,12 @@ const ShoppingCart = () => {
             backgroundSize: '4px 4px'
           }}></div>
           
-          <div className="absolute inset-0 bg-gradient-to-r from-red-500/5 via-transparent to-pink-500/5 animate-pulse"></div>
+          <div className="absolute inset-0 bg-linear-to-r from-red-500/5 via-transparent to-pink-500/5 animate-pulse"></div>
           
-          <div className="relative bg-gradient-to-br from-slate-900/40 to-slate-800/30 backdrop-blur-xl rounded-2xl border border-red-500/30 shadow-[0_0_80px_rgba(239,68,68,0.8)] max-w-md w-full overflow-hidden">
-            <div className="h-1 bg-gradient-to-r from-transparent via-red-400 to-transparent animate-pulse"></div>
+          <div className="relative bg-linear-to-br from-slate-900/40 to-slate-800/30 backdrop-blur-xl rounded-2xl border border-red-500/30 shadow-[0_0_80px_rgba(239,68,68,0.8)] max-w-md w-full overflow-hidden">
+            <div className="h-1 bg-linear-to-r from-transparent via-red-400 to-transparent animate-pulse"></div>
             
-            <div className="p-6 border-b border-red-500/20 bg-gradient-to-r from-slate-900/50 to-slate-800/40">
+            <div className="p-6 border-b border-red-500/20 bg-linear-to-r from-slate-900/50 to-slate-800/40">
               <div className="flex justify-between items-center">
                 <div>
                   <h2 className="text-2xl font-bold text-white mb-1 drop-shadow-[0_0_15px_rgba(239,68,68,0.8)]">REMOVE ITEM</h2>
@@ -391,20 +391,20 @@ const ShoppingCart = () => {
               <div className="flex gap-4">
                 <button
                   onClick={() => setShowRemoveConfirm(null)}
-                  className="flex-1 px-6 py-3 bg-gradient-to-r from-slate-800/30 to-slate-700/30 text-cyan-300 rounded-xl border border-cyan-500/30 hover:border-cyan-400/50 hover:shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-all hover:scale-[1.02]"
+                  className="flex-1 px-6 py-3 bg-linear-to-r from-slate-800/30 to-slate-700/30 text-cyan-300 rounded-xl border border-cyan-500/30 hover:border-cyan-400/50 hover:shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-all hover:scale-[1.02]"
                 >
                   Cancel
                 </button>
                 <button
                   onClick={() => handleRemoveItem(showRemoveConfirm)}
-                  className="flex-1 px-6 py-3 bg-gradient-to-r from-red-500/30 to-pink-500/30 text-red-300 rounded-xl border border-red-500/40 hover:border-red-400/50 hover:shadow-[0_0_35px_rgba(239,68,68,0.8)] transition-all hover:scale-[1.02]"
+                  className="flex-1 px-6 py-3 bg-linear-to-r from-red-500/30 to-pink-500/30 text-red-300 rounded-xl border border-red-500/40 hover:border-red-400/50 hover:shadow-[0_0_35px_rgba(239,68,68,0.8)] transition-all hover:scale-[1.02]"
                 >
                   Remove
                 </button>
               </div>
             </div>
             
-            <div className="h-1 bg-gradient-to-r from-transparent via-red-400 to-transparent animate-pulse"></div>
+            <div className="h-1 bg-linear-to-r from-transparent via-red-400 to-transparent animate-pulse"></div>
           </div>
         </div>
       )}

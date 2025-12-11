@@ -169,7 +169,7 @@ const PartsCatalog = () => {
         <div className="relative" ref={filterRef}>
           <button 
             onClick={() => setIsFilterOpen(!isFilterOpen)}
-            className="flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-cyan-300 rounded-xl border border-cyan-500/30 hover:border-cyan-400/50 hover:shadow-[0_0_25px_rgba(6,182,212,0.5)] transition-all group drop-shadow-[0_0_12px_rgba(6,182,212,0.5)] backdrop-blur-sm"
+            className="flex items-center gap-2 px-5 py-3 bg-linear-to-r from-cyan-500/20 to-blue-500/20 text-cyan-300 rounded-xl border border-cyan-500/30 hover:border-cyan-400/50 hover:shadow-[0_0_25px_rgba(6,182,212,0.5)] transition-all group drop-shadow-[0_0_12px_rgba(6,182,212,0.5)] backdrop-blur-sm"
           >
             <FiFilter className="group-hover:scale-110 transition-transform" />
             <span>{selectedCategory}</span>
@@ -207,8 +207,8 @@ const PartsCatalog = () => {
           
             <div className="h-56 relative overflow-hidden">
     
-              <div className={`absolute inset-0 bg-gradient-to-br ${getCategoryColor(part.category)}`}>
-                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+              <div className={`absolute inset-0 bg-linear-to-br ${getCategoryColor(part.category)}`}>
+                <div className="absolute inset-0 bg-linear-to-t from-black/80 via-black/40 to-transparent"></div>
               </div>
               
               
@@ -221,7 +221,7 @@ const PartsCatalog = () => {
               
               
               <div className="absolute inset-0 overflow-hidden">
-                <div className="absolute -inset-x-full -inset-y-1/2 rotate-12 bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:animate-shine"></div>
+                <div className="absolute -inset-x-full -inset-y-1/2 rotate-12 bg-linear-to-r from-transparent via-white/20 to-transparent group-hover:animate-shine"></div>
               </div>
 
             
@@ -237,11 +237,11 @@ const PartsCatalog = () => {
               </div>
 
             
-              <div className="absolute bottom-0 left-0 right-0 h-16 bg-gradient-to-t from-slate-950/80 to-transparent"></div>
+              <div className="absolute bottom-0 left-0 right-0 h-16 bg-linear-to-t from-slate-950/80 to-transparent"></div>
             </div>
 
            
-            <div className="p-5 flex flex-col flex-grow bg-gradient-to-b from-slate-900/30 to-slate-900/10 backdrop-blur-sm border-t border-cyan-500/10">
+            <div className="p-5 flex flex-col grow bg-linear-to-b from-slate-900/30 to-slate-900/10 backdrop-blur-sm border-t border-cyan-500/10">
              
               <div className="flex justify-between items-start mb-4">
                 <div className="flex-1">
@@ -274,7 +274,7 @@ const PartsCatalog = () => {
                   e.stopPropagation();
                   openHoloModal(part);
                 }}
-                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-gradient-to-r from-green-500/15 to-emerald-500/15 text-green-300 rounded-lg border border-green-500/30 hover:border-green-400/50 hover:shadow-[0_0_20px_rgba(34,197,94,0.5)] transition-all group/btn backdrop-blur-sm mt-auto"
+                className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-linear-to-r from-green-500/15 to-emerald-500/15 text-green-300 rounded-lg border border-green-500/30 hover:border-green-400/50 hover:shadow-[0_0_20px_rgba(34,197,94,0.5)] transition-all group/btn backdrop-blur-sm mt-auto"
               >
                 <FiShoppingCart className="group-hover/btn:scale-110 transition-transform" />
                 <span className="text-sm font-medium">Add to Cart</span>
@@ -316,7 +316,7 @@ const PartsCatalog = () => {
                   key={pageNum}
                   onClick={() => setCurrentPage(pageNum)}
                   className={`w-12 h-12 rounded-xl border transition-all flex items-center justify-center backdrop-blur-sm ${currentPage === pageNum
-                    ? 'border-cyan-400/50 bg-gradient-to-r from-cyan-500/30 to-blue-500/30 text-cyan-300 shadow-[0_0_25px_rgba(6,182,212,0.6)] font-bold scale-110'
+                    ? 'border-cyan-400/50 bg-linear-to-r from-cyan-500/30 to-blue-500/30 text-cyan-300 shadow-[0_0_25px_rgba(6,182,212,0.6)] font-bold scale-110'
                     : 'border-slate-700/50 text-gray-400 hover:border-cyan-500/30 hover:text-cyan-300 hover:shadow-[0_0_15px_rgba(6,182,212,0.4)]'
                   }`}
                 >
@@ -361,12 +361,12 @@ const PartsCatalog = () => {
             backgroundSize: '4px 4px'
           }}></div>
           
-          <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 via-transparent to-purple-500/5 animate-pulse"></div>
+          <div className="absolute inset-0 bg-linear-to-r from-cyan-500/5 via-transparent to-purple-500/5 animate-pulse"></div>
           
-          <div className="relative bg-gradient-to-br from-slate-900/40 to-slate-800/30 backdrop-blur-xl rounded-2xl border border-cyan-500/30 shadow-[0_0_80px_rgba(6,182,212,0.8)] max-w-lg w-full max-h-[90vh] overflow-y-auto">
-            <div className="h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent animate-pulse"></div>
+          <div className="relative bg-linear-to-br from-slate-900/40 to-slate-800/30 backdrop-blur-xl rounded-2xl border border-cyan-500/30 shadow-[0_0_80px_rgba(6,182,212,0.8)] max-w-lg w-full max-h-[90vh] overflow-y-auto">
+            <div className="h-1 bg-linear-to-r from-transparent via-cyan-400 to-transparent animate-pulse"></div>
             
-            <div className="p-6 border-b border-cyan-500/20 bg-gradient-to-r from-slate-900/80 to-slate-800 sticky top-0 z-10">
+            <div className="p-6 border-b border-cyan-500/20 bg-linear-to-r from-slate-900/80 to-slate-800 sticky top-0 z-10">
               <div className="flex justify-between items-center">
                 <div>
                   <h2 className="text-2xl font-bold text-white mb-1 drop-shadow-[0_0_15px_rgba(6,182,212,0.8)]">HOLO-CONFIGURATOR</h2>
@@ -531,7 +531,7 @@ const PartsCatalog = () => {
                   </div>
                   <button 
                     onClick={handleAddToCart}
-                    className="w-full px-6 py-4 bg-gradient-to-r from-green-500/30 to-emerald-500/30 text-green-300 rounded-xl border border-green-500/40 hover:border-green-400/50 hover:shadow-[0_0_35px_rgba(34,197,94,0.8)] transition-all text-lg font-bold drop-shadow-[0_0_15px_rgba(34,197,94,0.7)] backdrop-blur-sm hover:scale-[1.02]"
+                    className="w-full px-6 py-4 bg-linear-to-r from-green-500/30 to-emerald-500/30 text-green-300 rounded-xl border border-green-500/40 hover:border-green-400/50 hover:shadow-[0_0_35px_rgba(34,197,94,0.8)] transition-all text-lg font-bold drop-shadow-[0_0_15px_rgba(34,197,94,0.7)] backdrop-blur-sm hover:scale-[1.02]"
                   >
                     <FiShoppingCart className="inline mr-2" />
                     ADD TO CART
@@ -540,7 +540,7 @@ const PartsCatalog = () => {
               </div>
             </div>
             
-            <div className="h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent animate-pulse"></div>
+            <div className="h-1 bg-linear-to-r from-transparent via-cyan-400 to-transparent animate-pulse"></div>
           </div>
         </div>
       )}

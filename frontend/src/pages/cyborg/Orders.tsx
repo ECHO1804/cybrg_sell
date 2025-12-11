@@ -1,5 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
-import { FiPackage, FiTool, FiZap, FiClock, FiCheckCircle, FiXCircle, FiDollarSign, FiFilter, FiChevronLeft, FiChevronRight, FiX, FiTrash2 } from 'react-icons/fi';
+import { FiPackage, FiTool, FiZap, FiClock, FiCheckCircle, FiXCircle, FiFilter, FiChevronLeft, FiChevronRight, FiX, FiTrash2 } from 'react-icons/fi';
 import CyborgLayout from './components/CyborgLayout';
 
 const Account = () => {
@@ -118,7 +118,7 @@ const Account = () => {
           <div className="relative" ref={filterRef}>
             <button 
               onClick={() => setIsFilterOpen(!isFilterOpen)}
-              className="flex items-center gap-2 px-5 py-3 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-cyan-300 rounded-xl border border-cyan-500/30 hover:border-cyan-400/50 hover:shadow-[0_0_25px_rgba(6,182,212,0.5)] transition-all group drop-shadow-[0_0_12px_rgba(6,182,212,0.5)] backdrop-blur-sm"
+              className="flex items-center gap-2 px-5 py-3 bg-linear-to-r from-cyan-500/20 to-blue-500/20 text-cyan-300 rounded-xl border border-cyan-500/30 hover:border-cyan-400/50 hover:shadow-[0_0_25px_rgba(6,182,212,0.5)] transition-all group drop-shadow-[0_0_12px_rgba(6,182,212,0.5)] backdrop-blur-sm"
             >
               <FiFilter className="group-hover:scale-110 transition-transform" />
               <span>{selectedStatus}</span>
@@ -164,7 +164,7 @@ const Account = () => {
             {selectedStatus !== 'All' && (
               <button
                 onClick={() => setSelectedStatus('All')}
-                className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-cyan-300 rounded-xl border border-cyan-500/30 hover:border-cyan-400/50 hover:shadow-[0_0_25px_rgba(6,182,212,0.5)] transition-all"
+                className="inline-flex items-center gap-2 px-6 py-3 bg-linear-to-r from-cyan-500/20 to-blue-500/20 text-cyan-300 rounded-xl border border-cyan-500/30 hover:border-cyan-400/50 hover:shadow-[0_0_25px_rgba(6,182,212,0.5)] transition-all"
               >
                 View All Orders
               </button>
@@ -309,7 +309,7 @@ const Account = () => {
                   key={pageNum}
                   onClick={() => setCurrentPage(pageNum)}
                   className={`w-12 h-12 rounded-xl border transition-all flex items-center justify-center backdrop-blur-sm ${currentPage === pageNum
-                    ? 'border-cyan-400/50 bg-gradient-to-r from-cyan-500/30 to-blue-500/30 text-cyan-300 shadow-[0_0_25px_rgba(6,182,212,0.6)] font-bold scale-110'
+                    ? 'border-cyan-400/50 bg-linear-to-r from-cyan-500/30 to-blue-500/30 text-cyan-300 shadow-[0_0_25px_rgba(6,182,212,0.6)] font-bold scale-110'
                     : 'border-slate-700/50 text-gray-400 hover:border-cyan-500/30 hover:text-cyan-300 hover:shadow-[0_0_15px_rgba(6,182,212,0.4)]'
                   }`}
                 >
@@ -343,12 +343,12 @@ const Account = () => {
             backgroundSize: '4px 4px'
           }}></div>
           
-          <div className="absolute inset-0 bg-gradient-to-r from-red-500/5 via-transparent to-pink-500/5 animate-pulse"></div>
+          <div className="absolute inset-0 bg-linear-to-r from-red-500/5 via-transparent to-pink-500/5 animate-pulse"></div>
           
-          <div className="relative bg-gradient-to-br from-slate-900/40 to-slate-800/30 backdrop-blur-xl rounded-2xl border border-red-500/30 shadow-[0_0_80px_rgba(239,68,68,0.8)] max-w-md w-full overflow-hidden">
-            <div className="h-1 bg-gradient-to-r from-transparent via-red-400 to-transparent animate-pulse"></div>
+          <div className="relative bg-linear-to-br from-slate-900/40 to-slate-800/30 backdrop-blur-xl rounded-2xl border border-red-500/30 shadow-[0_0_80px_rgba(239,68,68,0.8)] max-w-md w-full overflow-hidden">
+            <div className="h-1 bg-linear-to-r from-transparent via-red-400 to-transparent animate-pulse"></div>
             
-            <div className="p-6 border-b border-red-500/20 bg-gradient-to-r from-slate-900/50 to-slate-800/40">
+            <div className="p-6 border-b border-red-500/20 bg-linear-to-r from-slate-900/50 to-slate-800/40">
               <div className="flex justify-between items-center">
                 <div>
                   <h2 className="text-2xl font-bold text-white mb-1 drop-shadow-[0_0_15px_rgba(239,68,68,0.8)]">CANCEL ORDER</h2>
@@ -386,20 +386,20 @@ const Account = () => {
               <div className="flex gap-4">
                 <button
                   onClick={() => setCancelOrderId(null)}
-                  className="flex-1 px-6 py-3 bg-gradient-to-r from-slate-800/30 to-slate-700/30 text-cyan-300 rounded-xl border border-cyan-500/30 hover:border-cyan-400/50 hover:shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-all hover:scale-[1.02]"
+                  className="flex-1 px-6 py-3 bg-linear-to-r from-slate-800/30 to-slate-700/30 text-cyan-300 rounded-xl border border-cyan-500/30 hover:border-cyan-400/50 hover:shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-all hover:scale-[1.02]"
                 >
                   Go Back
                 </button>
                 <button
                   onClick={() => handleCancelOrder(cancelOrderId)}
-                  className="flex-1 px-6 py-3 bg-gradient-to-r from-red-500/30 to-pink-500/30 text-red-300 rounded-xl border border-red-500/40 hover:border-red-400/50 hover:shadow-[0_0_35px_rgba(239,68,68,0.8)] transition-all hover:scale-[1.02]"
+                  className="flex-1 px-6 py-3 bg-linear-to-r from-red-500/30 to-pink-500/30 text-red-300 rounded-xl border border-red-500/40 hover:border-red-400/50 hover:shadow-[0_0_35px_rgba(239,68,68,0.8)] transition-all hover:scale-[1.02]"
                 >
                   Confirm Cancel
                 </button>
               </div>
             </div>
             
-            <div className="h-1 bg-gradient-to-r from-transparent via-red-400 to-transparent animate-pulse"></div>
+            <div className="h-1 bg-linear-to-r from-transparent via-red-400 to-transparent animate-pulse"></div>
           </div>
         </div>
       )}

@@ -19,7 +19,7 @@ const Login = () => {
 
   return (
     <div className="min-h-screen bg-slate-950 flex flex-col items-center justify-center p-4">
-      <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-blue-500/5 to-purple-500/10"></div>
+      <div className="absolute inset-0 bg-linear-to-br from-cyan-500/10 via-blue-500/5 to-purple-500/10"></div>
 
       <div className="text-center mb-10 z-10">
         <h1 className="text-5xl font-bold text-white mb-4 drop-shadow-[0_0_25px_rgba(6,182,212,0.8)] tracking-tighter">
@@ -31,7 +31,7 @@ const Login = () => {
       </div>
 
       <div className="relative z-10 w-full max-w-md">
-        <div className="absolute -inset-0.5 bg-gradient-to-r from-cyan-500 via-blue-500 to-purple-500 rounded-2xl blur-md opacity-30 animate-pulse"></div>
+        <div className="absolute -inset-0.5 bg-linear-to-r from-cyan-500 via-blue-500 to-purple-500 rounded-2xl blur-md opacity-30 animate-pulse"></div>
 
         <div className="relative bg-slate-900/90 backdrop-blur-sm rounded-2xl border border-cyan-500/30 p-8 shadow-[0_0_60px_rgba(6,182,212,0.5)]">
           <form onSubmit={handleLogin} className="space-y-6">
@@ -74,7 +74,7 @@ const Login = () => {
 
             <button
               type="submit"
-              className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-gradient-to-r from-cyan-500/30 to-blue-500/30 text-cyan-300 rounded-xl border border-cyan-500/40 hover:border-cyan-400/50 hover:shadow-[0_0_35px_rgba(6,182,212,0.8)] transition-all group font-bold text-lg"
+              className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-linear-to-r from-cyan-500/30 to-blue-500/30 text-cyan-300 rounded-xl border border-cyan-500/40 hover:border-cyan-400/50 hover:shadow-[0_0_35px_rgba(6,182,212,0.8)] transition-all group font-bold text-lg"
             >
               <FiLogIn className="group-hover:scale-110 transition-transform" />
               <span>ACCESS NEURAL NETWORK</span>
@@ -83,7 +83,7 @@ const Login = () => {
             <button
               type="button"
               onClick={handleSignup}
-              className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-gradient-to-r from-purple-500/20 to-pink-500/20 text-purple-300 rounded-xl border border-purple-500/30 hover:border-purple-400/50 hover:shadow-[0_0_35px_rgba(147,51,234,0.8)] transition-all group font-bold text-lg"
+              className="w-full flex items-center justify-center gap-3 px-6 py-4 bg-linear-to-r from-purple-500/20 to-pink-500/20 text-purple-300 rounded-xl border border-purple-500/30 hover:border-purple-400/50 hover:shadow-[0_0_35px_rgba(147,51,234,0.8)] transition-all group font-bold text-lg"
             >
               <FiUserPlus className="group-hover:scale-110 transition-transform" />
               <span>CREATE NEURAL PROFILE</span>

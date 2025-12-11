@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { FiShoppingCart, FiTool, FiZap, FiPackage, FiArrowLeft, FiCheck, FiDollarSign, FiX } from 'react-icons/fi';
 import CyborgLayout from './components/CyborgLayout';
@@ -108,8 +108,8 @@ const PartsPage = () => {
        
         <div className="flex flex-col">
     
-          <div className="relative rounded-2xl overflow-hidden border border-cyan-500/30 bg-gradient-to-br from-slate-900/40 to-slate-800/30 backdrop-blur-sm mb-6 flex-shrink-0" style={{ height: '820px' }}>
-            <div className={`absolute inset-0 bg-gradient-to-br ${getCategoryColor(part.category)} opacity-20`}></div>
+          <div className="relative rounded-2xl overflow-hidden border border-cyan-500/30 bg-linear-to-br from-slate-900/40 to-slate-800/30 backdrop-blur-sm mb-6 shrink-0" style={{ height: '820px' }}>
+            <div className={`absolute inset-0 bg-linear-to-br ${getCategoryColor(part.category)} opacity-20`}></div>
             <div className="absolute inset-0 flex items-center justify-center">
               <FiPackage className="text-white/20 text-8xl drop-shadow-[0_0_20px_rgba(6,182,212,0.5)]" />
             </div>
@@ -121,7 +121,7 @@ const PartsPage = () => {
           </div>
 
          
-          <div className="bg-slate-900/60 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6 flex-grow">
+          <div className="bg-slate-900/60 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-6 grow">
             <div className="flex items-center justify-between mb-4">
               <h1 className="text-2xl font-bold text-white drop-shadow-[0_0_12px_rgba(6,182,212,0.7)]">
                 {part.name}
@@ -333,7 +333,7 @@ const PartsPage = () => {
           </div>
 
          
-          <div className="bg-gradient-to-br from-slate-900/60 to-slate-800/40 backdrop-blur-sm rounded-2xl border border-cyan-500/30 p-6 shadow-[0_0_40px_rgba(6,182,212,0.3)]">
+          <div className="bg-linear-to-br from-slate-900/60 to-slate-800/40 backdrop-blur-sm rounded-2xl border border-cyan-500/30 p-6 shadow-[0_0_40px_rgba(6,182,212,0.3)]">
             <h3 className="text-xl font-bold text-white mb-6 flex items-center gap-2 drop-shadow-[0_0_12px_rgba(6,182,212,0.7)]">
               <FiDollarSign />
               <span>ORDER SUMMARY</span>
@@ -371,7 +371,7 @@ const PartsPage = () => {
 
             <button
               onClick={handleOrderNow}
-              className="w-full px-6 py-3 bg-gradient-to-r from-cyan-500/30 to-blue-500/30 text-white rounded-xl border border-cyan-500/40 hover:border-cyan-400/50 hover:shadow-[0_0_30px_rgba(6,182,212,0.8)] transition-all text-base font-bold flex items-center justify-center gap-3 group hover:scale-[1.02]"
+              className="w-full px-6 py-3 bg-linear-to-r from-cyan-500/30 to-blue-500/30 text-white rounded-xl border border-cyan-500/40 hover:border-cyan-400/50 hover:shadow-[0_0_30px_rgba(6,182,212,0.8)] transition-all text-base font-bold flex items-center justify-center gap-3 group hover:scale-[1.02]"
             >
               <FiShoppingCart className="group-hover:scale-110 transition-transform" />
               <span>ORDER NOW</span>
@@ -406,12 +406,12 @@ const PartsPage = () => {
             backgroundSize: '4px 4px'
           }}></div>
           
-          <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/5 via-transparent to-blue-500/5 animate-pulse"></div>
+          <div className="absolute inset-0 bg-linear-to-r from-cyan-500/5 via-transparent to-blue-500/5 animate-pulse"></div>
           
-          <div className="relative bg-gradient-to-br from-slate-900/40 to-slate-800/30 backdrop-blur-xl rounded-2xl border border-cyan-500/30 shadow-[0_0_80px_rgba(6,182,212,0.8)] max-w-md w-full overflow-hidden">
-            <div className="h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent animate-pulse"></div>
+          <div className="relative bg-linear-to-br from-slate-900/40 to-slate-800/30 backdrop-blur-xl rounded-2xl border border-cyan-500/30 shadow-[0_0_80px_rgba(6,182,212,0.8)] max-w-md w-full overflow-hidden">
+            <div className="h-1 bg-linear-to-r from-transparent via-cyan-400 to-transparent animate-pulse"></div>
             
-            <div className="p-6 border-b border-cyan-500/20 bg-gradient-to-r from-slate-900/50 to-slate-800/40">
+            <div className="p-6 border-b border-cyan-500/20 bg-linear-to-r from-slate-900/50 to-slate-800/40">
               <div className="flex justify-between items-center">
                 <div>
                   <h2 className="text-2xl font-bold text-white mb-1 drop-shadow-[0_0_15px_rgba(6,182,212,0.8)]">ADDED TO CART</h2>
@@ -467,7 +467,7 @@ const PartsPage = () => {
               <div className="flex gap-4">
                 <button
                   onClick={() => setShowAddToCartModal(false)}
-                  className="flex-1 px-6 py-3 bg-gradient-to-r from-slate-800/30 to-slate-700/30 text-cyan-300 rounded-xl border border-cyan-500/30 hover:border-cyan-400/50 hover:shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-all hover:scale-[1.02]"
+                  className="flex-1 px-6 py-3 bg-linear-to-r from-slate-800/30 to-slate-700/30 text-cyan-300 rounded-xl border border-cyan-500/30 hover:border-cyan-400/50 hover:shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-all hover:scale-[1.02]"
                 >
                   Continue Browsing
                 </button>
@@ -476,14 +476,14 @@ const PartsPage = () => {
                     setShowAddToCartModal(false);
                     navigate('/cyborg/cart');
                   }}
-                  className="flex-1 px-6 py-3 bg-gradient-to-r from-cyan-500/30 to-blue-500/30 text-white rounded-xl border border-cyan-500/40 hover:border-cyan-400/50 hover:shadow-[0_0_25px_rgba(6,182,212,0.6)] transition-all hover:scale-[1.02]"
+                  className="flex-1 px-6 py-3 bg-linear-to-r from-cyan-500/30 to-blue-500/30 text-white rounded-xl border border-cyan-500/40 hover:border-cyan-400/50 hover:shadow-[0_0_25px_rgba(6,182,212,0.6)] transition-all hover:scale-[1.02]"
                 >
                   View Cart
                 </button>
               </div>
             </div>
             
-            <div className="h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent animate-pulse"></div>
+            <div className="h-1 bg-linear-to-r from-transparent via-cyan-400 to-transparent animate-pulse"></div>
           </div>
         </div>
       )}
