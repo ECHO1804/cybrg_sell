@@ -1,5 +1,7 @@
 import type { Request, Response } from 'express';
 import { registerUser, loginUser, getUserById } from '../services/auth.services';
+import { Request, Response } from 'express';
+import { registerUser, loginUser } from '../services/auth.services';
 import { signToken } from '../utils/jwt';
 import bcrypt from 'bcryptjs';
 
@@ -117,10 +119,5 @@ export const getProfile = async (req: Request, res: Response) => {
       });
     }
 
-    return res.json(data);
-  } catch (err) {
-    return res.status(500).json({ 
-      message: 'Failed to get profile' 
-    });
-  }
+  res.json({ message: "Login success", token });
 };

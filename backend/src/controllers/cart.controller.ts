@@ -1,4 +1,4 @@
-import type { Request, Response } from 'express';
+import { Request, Response } from 'express';
 import * as cartService from '../services/cart.service';
 import * as partsService from '../services/parts.service';
 

@@ -1,3 +1,5 @@
+import { Request, Response, NextFunction } from 'express';
+import { verifyToken } from '../utils/jwt';
 
 import type { Request, Response, NextFunction } from "express";
 
@@ -18,7 +20,4 @@ export function mockAuth(
   if (userId && typeof userId === "string") {
     req.user = { id: userId };
   }
-
-  // If not provided, still continue (public routes allowed)
-  next();
-}
+};

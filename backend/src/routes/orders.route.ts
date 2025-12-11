@@ -7,8 +7,8 @@ router.use(authMiddleware);
 
 router.get('/', getOrders);
 router.get('/:id', getOrderById);
-router.post('/', createOrder);
-router.put('/:id', updateOrder);
-router.delete('/:id', deleteOrder);
+router.post('/', authMiddleware, createOrder);
+router.put('/:id', authMiddleware, updateOrder);
+router.delete('/:id', authMiddleware, deleteOrder);
 
 export default router;

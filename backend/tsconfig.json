@@ -1,27 +1,38 @@
 {
   "compilerOptions": {
+    // File Layout
     "rootDir": "./src",
     "outDir": "./dist",
-    
-    "module": "esnext",           // ← CHANGED from "commonjs"
-    "moduleResolution": "bundler", // ← CHANGED from "node"
+
+    // Environment: switch to ESM
+    "module": "esnext",
+    "moduleResolution": "node",
     "target": "esnext",
-    
+
+    // Sequelize decorators (kept)
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
+
+    // Imports
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
+
+    // Strict type checking
     "strict": true,
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true,
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
+
+    // Outputs
     "sourceMap": true,
     "declaration": true,
     "declarationMap": true,
+
+    // ADVANCED: turn this OFF so ESM syntax is allowed everywhere
     "isolatedModules": true,
-    "verbatimModuleSyntax": true
+    "verbatimModuleSyntax": false
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]
