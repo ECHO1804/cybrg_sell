@@ -3,7 +3,7 @@ import * as ordersService from '../services/orders.services';
 
 export const getOrders = async (req: Request, res: Response) => {
   try {
-    const userId = (req as any).user?.id; // Optional: filter by user
+    const userId = (req as any).user?.id; 
     const { data, error } = await ordersService.getAllOrders(userId);
     
     if (error) {
