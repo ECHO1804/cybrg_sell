@@ -1,185 +1,413 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { FiTrash2, FiPackage, FiTool, FiZap, FiShoppingBag, FiCheckCircle, FiX } from 'react-icons/fi';
 import CyborgLayout from './components/CyborgLayout';
-import { FiTrash2, FiShoppingBag } from 'react-icons/fi';
-
-// Mock cart data
-const mockCartItems = [
-  {
-    id: 1,
-    part: {
-      id: 1,
-      name: 'Titanium Arm Prosthetic',
-      base_price: 2500,
-      quality_tier: 'premium' as const,
-    },
-    selected_attachments: [
-      { attachment: { name: 'Laser Sight', price: 300 }, slot: 'wrist' },
-      { attachment: { name: 'Grip Enhancer', price: 150 }, slot: 'palm' }
-    ],
-    selected_perks: [
-      { perk: { name: 'Enhanced Durability', price: 200 } }
-    ],
-    calculated_price: 3150,
-  },
-  {
-    id: 2,
-    part: {
-      id: 2,
-      name: 'Enhanced Optical Eye',
-      base_price: 1200,
-      quality_tier: 'standard' as const,
-    },
-    selected_attachments: [
-      { attachment: { name: 'Zoom Lens', price: 450 }, slot: 'front' }
-    ],
-    selected_perks: [],
-    calculated_price: 1650,
-  }
-];
 
 const ShoppingCart = () => {
-  const [cartItems, setCartItems] = useState(mockCartItems);
+  const [cartItems, setCartItems] = useState([
+    {
+      id: 1,
+      cart_item_id: 101,
+      part_id: 5,
+      part_name: 'Quantum Arm',
+      part_price: 2500,
+      category: 'Arm',
+      quantity: 1,
+      attachments: [
+        { id: 10, name: 'Laser Emitter', price: 200 },
+        { id: 15, name: 'Shield Projector', price: 150 }
+      ],
+      perks: [
+        { id: 7, name: 'Speed Boost', price: 100 }
+      ],
+      total_price: 2950
+    },
+    {
+      id: 2,
+      cart_item_id: 102,
+      part_id: 3,
+      part_name: 'Titanium Leg',
+      part_price: 2200,
+      category: 'Leg',
+      quantity: 1,
+      attachments: [
+        { id: 8, name: 'Hydraulic Boost', price: 300 }
+      ],
+      perks: [
+        { id: 5, name: 'Durability+', price: 150 },
+        { id: 6, name: 'Energy Efficiency', price: 120 }
+      ],
+      total_price: 2770
+    }
+  ]);
 
-  const removeFromCart = (itemId: number) => {
-    setCartItems(cartItems.filter(item => item.id !== itemId));
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showRemoveConfirm, setShowRemoveConfirm] = useState<number | null>(null);
+
+  const handleRemoveItem = (cartItemId: number) => {
+    setCartItems(prev => prev.filter(item => item.cart_item_id !== cartItemId));
+    setShowRemoveConfirm(null);
   };
 
-  const totalPrice = cartItems.reduce((sum, item) => sum + item.calculated_price, 0);
+  const handleUpdateQuantity = (cartItemId: number, newQuantity: number) => {
+    if (newQuantity < 1) {
+      setShowRemoveConfirm(cartItemId);
+      return;
+    }
+    
+    setCartItems(prev => prev.map(item => 
+      item.cart_item_id === cartItemId 
+        ? { 
+            ...item, 
+            quantity: newQuantity,
+            total_price: (item.part_price + 
+                         item.attachments.reduce((sum, att) => sum + att.price, 0) +
+                         item.perks.reduce((sum, perk) => sum + perk.price, 0)) * newQuantity
+          }
+        : item
+    ));
+  };
 
-  if (cartItems.length === 0) {
-    return (
-      <CyborgLayout cartItemsCount={0}>
-        <div className="text-center py-16">
-          <FiShoppingBag className="w-24 h-24 text-gray-600 mx-auto mb-6" />
-          <h2 className="text-2xl font-bold text-gray-400 mb-4">Your Cart is Empty</h2>
-          <p className="text-gray-500 mb-8">Browse our parts catalog to find enhancements</p>
-          <Link
-            to="/cyborg/parts"
-            className="bg-cyan-600 hover:bg-cyan-700 text-white px-8 py-3 rounded-lg font-medium transition-colors duration-200"
-          >
-            Browse Parts
-          </Link>
-        </div>
-      </CyborgLayout>
-    );
-  }
+  const calculateCartTotal = () => {
+    return cartItems.reduce((total, item) => total + item.total_price, 0);
+  };
+
+  const calculateItemsCount = () => {
+    return cartItems.reduce((count, item) => count + item.quantity, 0);
+  };
+
+  const handlePlaceOrder = () => {
+    console.log('Order placed:', cartItems);
+    setShowSuccessModal(true);
+  };
+
+  const getCategoryGlow = (category: string) => {
+    const colors = {
+      'Arm': 'bg-cyan-500/30 border-cyan-400/60 text-cyan-200 shadow-[0_0_15px_rgba(6,182,212,0.6)]',
+      'Leg': 'bg-purple-500/30 border-purple-400/60 text-purple-200 shadow-[0_0_15px_rgba(168,85,247,0.6)]',
+      'Torso': 'bg-orange-500/30 border-orange-400/60 text-orange-200 shadow-[0_0_15px_rgba(249,115,22,0.6)]',
+      'Organ': 'bg-red-500/30 border-red-400/60 text-red-200 shadow-[0_0_15px_rgba(244,63,94,0.6)]'
+    };
+    return colors[category as keyof typeof colors] || 'bg-slate-800/50 border-slate-700/50 text-slate-300';
+  };
 
   return (
-    <CyborgLayout cartItemsCount={cartItems.length}>
-      {/* Header */}
+    <CyborgLayout cartItemsCount={calculateItemsCount()}>
+     
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-cyan-400 mb-2">Shopping Cart</h1>
-        <p className="text-gray-400">Review your selected enhancements</p>
+        <h1 className="text-3xl font-bold text-white mb-2 drop-shadow-[0_0_15px_rgba(6,182,212,0.7)]">
+          SHOPPING CART
+        </h1>
+        <p className="text-cyan-300/70 drop-shadow-[0_0_8px_rgba(6,182,212,0.5)]">
+          Review your cybernetic upgrades before ordering
+        </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Cart Items */}
-        <div className="lg:col-span-2 space-y-6">
-          {cartItems.map((item) => (
-            <div
-              key={item.id}
-              className="bg-slate-800/50 rounded-lg border border-slate-700 p-6"
+     
+      <div className="space-y-6 mb-10">
+        {cartItems.length === 0 ? (
+          <div className="bg-slate-900/60 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-12 text-center">
+            <FiShoppingBag className="text-6xl text-cyan-500/50 mx-auto mb-4 drop-shadow-[0_0_20px_rgba(6,182,212,0.5)]" />
+            <h3 className="text-xl font-bold text-white mb-2 drop-shadow-[0_0_10px_rgba(6,182,212,0.6)]">
+              Your cart is empty
+            </h3>
+            <p className="text-cyan-300/70 mb-6">
+              Browse our catalog to add cybernetic parts
+            </p>
+            <a 
+              href="/cyborg"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-linear-to-r from-cyan-500/20 to-blue-500/20 text-cyan-300 rounded-xl border border-cyan-500/30 hover:border-cyan-400/50 hover:shadow-[0_0_25px_rgba(6,182,212,0.5)] transition-all"
             >
-              {/* Part Header */}
-              <div className="flex justify-between items-start mb-4">
-                <div>
-                  <h3 className="text-xl font-semibold text-white">{item.part.name}</h3>
-                  <p className="text-gray-400 text-sm">{item.part.quality_tier} quality</p>
-                </div>
-                <button
-                  onClick={() => removeFromCart(item.id)}
-                  className="text-gray-400 hover:text-rose-500 transition-colors duration-200"
-                >
-                  <FiTrash2 className="w-5 h-5" />
-                </button>
-              </div>
-
-              {/* Attachments */}
-              {item.selected_attachments.length > 0 && (
-                <div className="mb-4">
-                  <h4 className="text-sm font-medium text-cyan-400 mb-2">Attachments</h4>
-                  <div className="space-y-2">
-                    {item.selected_attachments.map((attachment, index) => (
-                      <div key={index} className="flex justify-between text-sm">
-                        <span className="text-gray-300">
-                          {attachment.attachment.name} <span className="text-gray-500">({attachment.slot})</span>
-                        </span>
-                        <span className="text-cyan-400">+${attachment.attachment.price}</span>
+              <FiPackage />
+              Browse Parts
+            </a>
+          </div>
+        ) : (
+          cartItems.map(item => (
+            <div 
+              key={item.cart_item_id}
+              className="bg-slate-900/60 backdrop-blur-sm rounded-2xl border border-slate-700/50 overflow-hidden group hover:border-cyan-500/30 transition-all duration-300"
+            >
+              <div className="p-6">
+                <div className="flex flex-col md:flex-row md:items-start gap-6">
+                 
+                  <div className="flex-1">
+                    <div className="flex items-start justify-between mb-4">
+                      <div>
+                        <div className="flex items-center gap-3 mb-2">
+                          <span className={`px-4 py-1.5 rounded-full text-sm font-bold border ${getCategoryGlow(item.category)}`}>
+                            {item.category}
+                          </span>
+                          <h3 className="text-xl font-bold text-white drop-shadow-[0_0_10px_rgba(6,182,212,0.6)]">
+                            {item.part_name}
+                          </h3>
+                        </div>
+                        <div className="text-green-400 text-2xl font-bold drop-shadow-[0_0_15px_rgba(34,197,94,0.7)]">
+                          ${item.part_price.toLocaleString()}
+                        </div>
                       </div>
-                    ))}
+                      
+                     
+                      <div className="flex items-center gap-3">
+                        <button
+                          onClick={() => handleUpdateQuantity(item.cart_item_id, item.quantity - 1)}
+                          className="px-3 py-1 rounded-lg border border-cyan-500/30 text-cyan-300 hover:border-cyan-400/50 hover:shadow-[0_0_15px_rgba(6,182,212,0.4)] transition-all hover:scale-110"
+                        >
+                          −
+                        </button>
+                        <div className="text-xl font-bold text-white px-4 py-1 bg-slate-800/50 rounded-lg border border-cyan-500/20 min-w-12 text-center shadow-[0_0_10px_rgba(6,182,212,0.3)]">
+                          {item.quantity}
+                        </div>
+                        <button
+                          onClick={() => handleUpdateQuantity(item.cart_item_id, item.quantity + 1)}
+                          className="px-3 py-1 rounded-lg border border-cyan-500/30 text-cyan-300 hover:border-cyan-400/50 hover:shadow-[0_0_15px_rgba(6,182,212,0.4)] transition-all hover:scale-110"
+                        >
+                          +
+                        </button>
+                      </div>
+                    </div>
+
+                    
+                    {item.attachments.length > 0 && (
+                      <div className="mb-4">
+                        <div className="flex items-center gap-2 text-cyan-300 mb-2 drop-shadow-[0_0_6px_rgba(6,182,212,0.5)]">
+                          <FiTool className="text-lg" />
+                          <span className="font-bold">ATTACHMENTS</span>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {item.attachments.map(att => (
+                            <span 
+                              key={att.id}
+                              className="px-3 py-1.5 rounded-lg bg-cyan-500/20 border border-cyan-500/40 text-cyan-200 text-sm font-medium shadow-[0_0_8px_rgba(6,182,212,0.4)]"
+                            >
+                              {att.name} (+${att.price})
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+
+                  
+                    {item.perks.length > 0 && (
+                      <div>
+                        <div className="flex items-center gap-2 text-purple-300 mb-2 drop-shadow-[0_0_6px_rgba(168,85,247,0.5)]">
+                          <FiZap className="text-lg" />
+                          <span className="font-bold">PERKS</span>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {item.perks.map(perk => (
+                            <span 
+                              key={perk.id}
+                              className="px-3 py-1.5 rounded-lg bg-purple-500/20 border border-purple-500/40 text-purple-200 text-sm font-medium shadow-[0_0_8px_rgba(168,85,247,0.4)]"
+                            >
+                              {perk.name} (+${perk.price})
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </div>
+
+                 
+                  <div className="md:w-48 space-y-4">
+                    <div className="text-right">
+                      <div className="text-cyan-300/70 text-sm mb-1">Item Total</div>
+                      <div className="text-2xl font-bold text-green-400 drop-shadow-[0_0_15px_rgba(34,197,94,0.7)]">
+                        ${item.total_price.toLocaleString()}
+                      </div>
+                    </div>
+                    
+                    <button
+                      onClick={() => setShowRemoveConfirm(item.cart_item_id)}
+                      className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-red-500/10 text-red-300 rounded-lg border border-red-500/30 hover:border-red-400/50 hover:shadow-[0_0_20px_rgba(239,68,68,0.5)] transition-all group hover:scale-[1.02]"
+                    >
+                      <FiTrash2 className="group-hover:scale-110 transition-transform" />
+                      <span className="font-medium">Remove</span>
+                    </button>
                   </div>
                 </div>
-              )}
+              </div>
+            </div>
+          ))
+        )}
+      </div>
 
-              {/* Perks */}
-              {item.selected_perks.length > 0 && (
-                <div className="mb-4">
-                  <h4 className="text-sm font-medium text-cyan-400 mb-2">Perks</h4>
-                  <div className="space-y-2">
-                    {item.selected_perks.map((perk, index) => (
-                      <div key={index} className="flex justify-between text-sm">
-                        <span className="text-gray-300">{perk.perk.name}</span>
-                        <span className="text-cyan-400">+${perk.perk.price}</span>
-                      </div>
-                    ))}
+     
+      {cartItems.length > 0 && (
+        <div className="bg-linear-to-br from-slate-900/60 to-slate-800/40 backdrop-blur-sm rounded-2xl border border-cyan-500/30 p-8 shadow-[0_0_40px_rgba(6,182,212,0.3)]">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+           
+            <div>
+              <h3 className="text-xl font-bold text-white mb-6 drop-shadow-[0_0_12px_rgba(6,182,212,0.7)]">
+                ORDER SUMMARY
+              </h3>
+              
+              <div className="space-y-4">
+                <div className="flex justify-between text-gray-300">
+                  <div>Items ({calculateItemsCount()})</div>
+                  <div className="text-white font-medium">${calculateCartTotal().toLocaleString()}</div>
+                </div>
+                
+                <div className="pt-4 border-t border-cyan-500/30">
+                  <div className="flex justify-between text-lg">
+                    <div className="text-cyan-300 font-semibold">TOTAL</div>
+                    <div className="text-green-400 text-3xl font-bold drop-shadow-[0_0_20px_rgba(34,197,94,0.8)]">
+                      ${calculateCartTotal().toLocaleString()}
+                    </div>
                   </div>
                 </div>
-              )}
-
-             
-
-              {/* Item Total */}
-              <div className="flex justify-between items-center pt-4 border-t border-slate-700">
-                <span className="text-gray-400">Item Total</span>
-                <span className="text-2xl font-bold text-cyan-400">
-                  ${item.calculated_price}
-                </span>
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Order Summary */}
-        <div className="lg:col-span-1">
-          <div className="bg-slate-800/50 rounded-lg border border-slate-700 p-6 sticky top-6">
-            <h3 className="text-xl font-semibold text-white mb-4">Order Summary</h3>
-            
-            <div className="space-y-3 mb-6">
-              <div className="flex justify-between text-gray-300">
-                <span>Subtotal</span>
-                <span>${totalPrice}</span>
-              </div>
-              <div className="flex justify-between text-gray-300">
-                <span>Installation Fee</span>
-                <span>$200</span>
-              </div>
-              <div className="flex justify-between text-gray-300">
-                <span>Neural Sync Tax</span>
-                <span>$150</span>
-              </div>
-              <div className="border-t border-slate-700 pt-3">
-                <div className="flex justify-between text-lg font-semibold text-cyan-400">
-                  <span>Total</span>
-                  <span>${totalPrice + 350}</span>
-                </div>
               </div>
             </div>
 
-
-            <button className="w-full bg-cyan-600 hover:bg-cyan-700 text-white py-3 px-4 rounded-lg font-semibold transition-colors duration-200">
-              Proceed to Checkout
-            </button>
-
-            <Link
-              to="/cyborg/parts"
-              className="block text-center text-cyan-400 hover:text-cyan-300 mt-4 transition-colors duration-200"
-            >
-              Continue Shopping
-            </Link>
+           
+            <div className="flex flex-col justify-end space-y-4">
+              <button
+                onClick={handlePlaceOrder}
+                className="w-full px-6 py-4 bg-linear-to-r from-cyan-500/30 to-blue-500/30 text-white rounded-xl border border-cyan-500/40 hover:border-cyan-400/50 hover:shadow-[0_0_35px_rgba(6,182,212,0.8)] transition-all text-lg font-bold hover:scale-[1.02] active:scale-[0.98]"
+              >
+                PLACE ORDER
+              </button>
+              
+              <a
+                href="/cyborg"
+                className="w-full px-6 py-3 bg-linear-to-r from-slate-800/30 to-slate-700/30 text-cyan-300 rounded-xl border border-cyan-500/30 hover:border-cyan-400/50 hover:shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-all text-center hover:scale-[1.02]"
+              >
+                Continue Shopping
+              </a>
+            </div>
+          </div>
+          
+          <div className="mt-6 pt-6 border-t border-cyan-500/20 text-center">
+            <p className="text-cyan-300/70 text-sm">
+              Bring your order number to the seller's counter for payment and installation
+            </p>
           </div>
         </div>
-      </div>
+      )}
+
+     
+      {showSuccessModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/90 backdrop-blur-sm" onClick={() => setShowSuccessModal(false)}></div>
+          
+          <div className="absolute inset-0 opacity-10" style={{
+            backgroundImage: `linear-gradient(0deg, transparent 50%, rgba(6, 182, 212, 0.5) 50%)`,
+            backgroundSize: '4px 4px'
+          }}></div>
+          
+          <div className="absolute inset-0 bg-linear-to-r from-green-500/5 via-transparent to-emerald-500/5 animate-pulse"></div>
+          
+          <div className="relative bg-linear-to-br from-slate-900/40 to-slate-800/30 backdrop-blur-xl rounded-2xl border border-green-500/30 shadow-[0_0_80px_rgba(34,197,94,0.8)] max-w-lg w-full overflow-hidden">
+            <div className="h-1 bg-linear-to-r from-transparent via-green-400 to-transparent animate-pulse"></div>
+            
+            <div className="p-6 border-b border-green-500/20 bg-linear-to-r from-slate-900/50 to-slate-800/40">
+              <div className="flex justify-between items-center">
+                <div>
+                  <h2 className="text-2xl font-bold text-white mb-1 drop-shadow-[0_0_15px_rgba(34,197,94,0.8)]">ORDER CONFIRMED</h2>
+                  <p className="text-green-300/70 text-sm">Your order has been placed successfully</p>
+                </div>
+                <button 
+                  onClick={() => setShowSuccessModal(false)}
+                  className="p-2 rounded-lg border border-green-500/30 hover:border-green-400/50 hover:bg-green-500/10 hover:shadow-[0_0_20px_rgba(34,197,94,0.6)] transition-all"
+                >
+                  <FiX className="text-green-300 drop-shadow-[0_0_8px_rgba(34,197,94,0.6)]" />
+                </button>
+              </div>
+            </div>
+
+            <div className="p-8 text-center">
+              <div className="mb-6">
+                <FiCheckCircle className="text-7xl text-green-400 mx-auto mb-4 drop-shadow-[0_0_30px_rgba(34,197,94,0.9)] animate-pulse" />
+                <div className="text-cyan-300 text-lg font-bold mb-2 drop-shadow-[0_0_12px_rgba(6,182,212,0.7)]">
+                  Order Number: <span className="text-white font-mono">#{Math.floor(Math.random() * 1000000)}</span>
+                </div>
+                <p className="text-gray-300">
+                  Order total: <span className="text-green-400 font-bold">${calculateCartTotal().toLocaleString()}</span>
+                </p>
+              </div>
+              
+              <div className="bg-slate-900/40 rounded-xl p-4 mb-6 border border-cyan-500/20">
+                <p className="text-cyan-300/90">
+                  Please proceed to the seller's counter for payment and installation. Bring your order number with you.
+                </p>
+              </div>
+              
+              <button
+                onClick={() => {
+                  setShowSuccessModal(false);
+                  setCartItems([]);
+                }}
+                className="w-full px-6 py-4 bg-linear-to-r from-green-500/30 to-emerald-500/30 text-white rounded-xl border border-green-500/40 hover:border-green-400/50 hover:shadow-[0_0_35px_rgba(34,197,94,0.8)] transition-all text-lg font-bold hover:scale-[1.02]"
+              >
+                CONTINUE SHOPPING
+              </button>
+            </div>
+            
+            <div className="h-1 bg-linear-to-r from-transparent via-green-400 to-transparent animate-pulse"></div>
+          </div>
+        </div>
+      )}
+
+
+      {showRemoveConfirm && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+          <div className="absolute inset-0 bg-black/90 backdrop-blur-sm" onClick={() => setShowRemoveConfirm(null)}></div>
+          
+          <div className="absolute inset-0 opacity-10" style={{
+            backgroundImage: `linear-gradient(0deg, transparent 50%, rgba(239, 68, 68, 0.5) 50%)`,
+            backgroundSize: '4px 4px'
+          }}></div>
+          
+          <div className="absolute inset-0 bg-linear-to-r from-red-500/5 via-transparent to-pink-500/5 animate-pulse"></div>
+          
+          <div className="relative bg-linear-to-br from-slate-900/40 to-slate-800/30 backdrop-blur-xl rounded-2xl border border-red-500/30 shadow-[0_0_80px_rgba(239,68,68,0.8)] max-w-md w-full overflow-hidden">
+            <div className="h-1 bg-linear-to-r from-transparent via-red-400 to-transparent animate-pulse"></div>
+            
+            <div className="p-6 border-b border-red-500/20 bg-linear-to-r from-slate-900/50 to-slate-800/40">
+              <div className="flex justify-between items-center">
+                <div>
+                  <h2 className="text-2xl font-bold text-white mb-1 drop-shadow-[0_0_15px_rgba(239,68,68,0.8)]">REMOVE ITEM</h2>
+                  <p className="text-red-300/70 text-sm">Confirm item removal</p>
+                </div>
+                <button 
+                  onClick={() => setShowRemoveConfirm(null)}
+                  className="p-2 rounded-lg border border-red-500/30 hover:border-red-400/50 hover:bg-red-500/10 hover:shadow-[0_0_20px_rgba(239,68,68,0.6)] transition-all"
+                >
+                  <FiX className="text-red-300 drop-shadow-[0_0_8px_rgba(239,68,68,0.6)]" />
+                </button>
+              </div>
+            </div>
+
+            <div className="p-8 text-center">
+              <div className="mb-6">
+                <FiTrash2 className="text-5xl text-red-400 mx-auto mb-4 drop-shadow-[0_0_20px_rgba(239,68,68,0.9)]" />
+                <p className="text-gray-300 text-lg mb-2">
+                  Are you sure you want to remove this item from your cart?
+                </p>
+                <p className="text-red-300/70">
+                  This action cannot be undone.
+                </p>
+              </div>
+              
+              <div className="flex gap-4">
+                <button
+                  onClick={() => setShowRemoveConfirm(null)}
+                  className="flex-1 px-6 py-3 bg-linear-to-r from-slate-800/30 to-slate-700/30 text-cyan-300 rounded-xl border border-cyan-500/30 hover:border-cyan-400/50 hover:shadow-[0_0_20px_rgba(6,182,212,0.4)] transition-all hover:scale-[1.02]"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={() => handleRemoveItem(showRemoveConfirm)}
+                  className="flex-1 px-6 py-3 bg-linear-to-r from-red-500/30 to-pink-500/30 text-red-300 rounded-xl border border-red-500/40 hover:border-red-400/50 hover:shadow-[0_0_35px_rgba(239,68,68,0.8)] transition-all hover:scale-[1.02]"
+                >
+                  Remove
+                </button>
+              </div>
+            </div>
+            
+            <div className="h-1 bg-linear-to-r from-transparent via-red-400 to-transparent animate-pulse"></div>
+          </div>
+        </div>
+      )}
     </CyborgLayout>
   );
 };

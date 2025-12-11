@@ -3,14 +3,17 @@ import Navigation from './Navigation';
 
 interface CyborgLayoutProps {
   children: ReactNode;
-  cartItemsCount: number;
+  cartItemsCount?: number;
 }
 
-const CyborgLayout = ({ children, cartItemsCount }: CyborgLayoutProps) => {
+const CyborgLayout = ({ children, cartItemsCount = 0 }: CyborgLayoutProps) => {
   return (
-    <div className="min-h-screen bg-linear-to-br from-slate-900 via-slate-800 to-slate-900">
-      <Navigation cartItemsCount={cartItemsCount} />
-      <main className="max-w-7xl mx-auto py-6 px-4">
+    <div
+      style={{ fontFamily: "'Aquire', 'Orbitron'" }}
+      className="min-h-screen bg-slate-950"
+    >
+      <Navigation />
+      <main className="max-w-7xl mx-auto py-6 px-4 pt-20">
         {children}
       </main>
     </div>

@@ -1,60 +1,142 @@
-import { Link, useLocation } from 'react-router-dom';
-import { FiShoppingCart, FiPackage, FiList } from 'react-icons/fi';
+import { useState, useEffect } from 'react';
+import { FiPackage, FiShoppingCart, FiLogOut, FiMenu, FiX, FiUser, FiChevronDown, FiEye, FiChevronUp } from 'react-icons/fi';
 
-interface NavigationProps {
-  cartItemsCount: number;
-}
+const Navigation = () => {
+  const [isAccountDropdownOpen, setIsAccountDropdownOpen] = useState(false);
+  const [cartItems] = useState(3);
+  const [isNavbarVisible, setIsNavbarVisible] = useState(true);
+  const [isAtTop, setIsAtTop] = useState(true);
 
-const Navigation = ({ cartItemsCount }: NavigationProps) => {
-  const location = useLocation();
+  useEffect(() => {
+    const handleScroll = () => {
+      const atTop = window.scrollY === 0;
+      setIsAtTop(atTop);
+      if (atTop) setIsNavbarVisible(true);
+      setIsAccountDropdownOpen(false);
+    };
 
-  const navItems = [
-    { path: '/cyborg/parts', label: 'Parts Catalog', icon: FiList },
-    { path: '/cyborg/cart', label: 'Shopping Cart', icon: FiShoppingCart },
-    { path: '/cyborg/orders', label: 'Orders', icon: FiPackage },
-  ];
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const toggleNavbar = () => setIsNavbarVisible(!isNavbarVisible);
+  const handleSignOut = () => window.location.href = '/';
+  const handleViewOrders = () => {
+    window.location.href = '/cyborg/orders';
+    setIsAccountDropdownOpen(false);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      const target = e.target as HTMLElement;
+      if (!target.closest('.account-dropdown-container')) {
+        setIsAccountDropdownOpen(false);
+      }
+    };
+    
+    document.addEventListener('click', handleClickOutside);
+    return () => document.removeEventListener('click', handleClickOutside);
+  }, []);
 
   return (
-    <nav className="bg-slate-900 border-b border-cyan-500/30 shadow-lg">
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="flex justify-between items-center h-16">
-        
-          <div className="shrink-0">
-            <h1 className="text-cyan-400 text-xl font-bold tracking-wider">
-              CYBORG PARTS
-            </h1>
-          </div>
+    <>
+    
+      {!isAtTop && (
+        <button
+          onClick={toggleNavbar}
+          className="fixed top-4 right-4 z-[9999] p-2 bg-slate-900/90 backdrop-blur-sm rounded-lg border border-cyan-500/30 text-cyan-300 hover:border-cyan-400/50 hover:shadow-[0_0_20px_rgba(6,182,212,0.6)] transition-all group"
+        >
+          {isNavbarVisible ? <FiChevronUp /> : <FiChevronDown />}
+        </button>
+      )}
 
-          {/* Links */}
-          <div className="flex space-x-8">
-            {navItems.map((item) => {
-              const Icon = item.icon;
-              const isActive = location.pathname === item.path;
-              
-              return (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-all duration-200 ${
-                    isActive
-                      ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/50'
-                      : 'text-gray-300 hover:text-cyan-400 hover:bg-slate-800'
-                  }`}
-                >
-                  <Icon className="w-5 h-5" />
-                  <span className="font-medium">{item.label}</span>
-                  {item.label === 'Shopping Cart' && cartItemsCount > 0 && (
-                    <span className="bg-rose-500 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center">
-                      {cartItemsCount}
+    
+      <nav 
+        className={`fixed top-0 left-0 right-0 z-[9998] transition-transform duration-300 ${
+          isNavbarVisible ? 'translate-y-0' : '-translate-y-full'
+        }`}
+      >
+        <div 
+          className="text-white p-[1px] rounded-b-lg bg-gradient-to-r from-cyan-500 via-blue-500 to-blue-50"
+          style={{ animation: 'glow-pulse 2s ease-in-out infinite' }}
+        >
+          <div className="bg-slate-950 rounded-b-lg">
+            <div className="h-16 container mx-auto px-4 sm:px-6 flex items-center justify-between">
+            
+              <a href="/cyborg" className="flex items-center space-x-3 group">
+                <div className="relative">
+                  <img 
+                    src="/path-to-your-logo.png"
+                    alt="CYBORGMANIA Logo"
+                    className="h-10 w-10 object-contain filter brightness-125 saturate-150 drop-shadow-[0_0_8px_rgba(6,182,212,0.7)] group-hover:drop-shadow-[0_0_15px_rgba(6,182,212,1)] transition-all duration-300"
+                  />
+                  <div className="absolute inset-0 rounded-full border border-cyan-400/50 group-hover:border-cyan-300 group-hover:scale-110 transition-all duration-500"></div>
+                </div>
+                <div className="font-bold text-xl text-cyber-glow animate-text-glow">
+                  CYBORGMANIA
+                </div>
+              </a>
+
+    
+              <div className="hidden md:flex items-center space-x-6">
+                <a href="/cyborg" className="nav-link flex items-center space-x-2 group">
+                  <FiPackage className="text-lg group-hover:scale-110 transition-transform" />
+                  <span>Parts</span>
+                </a>
+                
+                <a href="/cyborg/cart" className="nav-link flex items-center space-x-2 group relative">
+                  <FiShoppingCart className="text-lg group-hover:scale-110 transition-transform" />
+                  <span>Cart</span>
+                  {cartItems > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center drop-shadow-[0_0_6px_rgba(239,68,68,0.7)]">
+                      {cartItems}
                     </span>
                   )}
-                </Link>
-              );
-            })}
+                </a>
+                
+                <div className="h-6 w-px bg-gray-700"></div>
+                
+               
+                <div className="relative account-dropdown-container">
+                  <button
+                    onClick={() => setIsAccountDropdownOpen(!isAccountDropdownOpen)}
+                    className="nav-link flex items-center space-x-2 group px-4 py-2 rounded-md hover:bg-gray-800/50 transition-all duration-300"
+                  >
+                    <FiUser className="text-lg" />
+                    <span>Account</span>
+                    <FiChevronDown className={`ml-1 transition-transform ${isAccountDropdownOpen ? 'rotate-180' : ''}`} />
+                  </button>
+                  
+                  {isAccountDropdownOpen && (
+                    <div className="absolute top-full right-0 mt-2 w-56 bg-slate-900/95 backdrop-blur-sm rounded-xl border border-cyan-500/40 shadow-[0_0_50px_rgba(6,182,212,0.5)] z-[10000]">
+                      <div className="p-2 space-y-1">
+                        <button
+                          onClick={handleViewOrders}
+                          className="w-full text-left flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-300 hover:text-cyan-300 hover:bg-cyan-500/10 transition-all group"
+                        >
+                          <FiEye className="group-hover:scale-110 transition-transform" />
+                          <span>View Orders</span>
+                        </button>
+                        
+                        <div className="h-px bg-cyan-500/20"></div>
+                        
+                        <button
+                          onClick={handleSignOut}
+                          className="w-full text-left flex items-center space-x-3 px-4 py-3 rounded-lg text-red-300 hover:text-red-200 hover:bg-red-500/10 transition-all group"
+                        >
+                          <FiLogOut className="group-hover:scale-110 transition-transform" />
+                          <span>Sign Out</span>
+                        </button>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+    </>
   );
 };
 
