@@ -13,7 +13,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
       style={{ fontFamily: "'Aquire', 'Orbitron'" }}
     >
       <Navigation />
-      <main className="max-w-7xl mx-auto py-6 px-4">
+      <main className="max-w-7xl mx-auto py-6 px-4 pt-20">
         {children}
       </main>
     </div>

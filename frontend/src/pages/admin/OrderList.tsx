@@ -146,7 +146,7 @@ const OrderList = () => {
                   <div>
                     <label className="block text-sm text-cyan-300/70 mb-2 drop-shadow-[0_0_4px_rgba(6,182,212,0.4)]">Category</label>
                     <div className="space-y-2">
-                      {['All', 'Arm', 'Leg', 'Eye', 'Torso', 'Organ', 'Brain'].map(category => (
+                      {['All', 'Arm', 'Leg','Torso', 'Organ'].map(category => (
                         <label key={category} className="flex items-center space-x-2 cursor-pointer group/filter">
                           <input type="checkbox" className="rounded border-cyan-500/50 bg-slate-800/50 accent-cyan-500" />
                           <span className="text-gray-300 text-sm group-hover/filter:text-cyan-300 transition-colors">{category}</span>
