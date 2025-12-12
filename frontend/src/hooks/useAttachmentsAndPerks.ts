@@ -19,7 +19,7 @@ export const useAttachmentsAndPerks = () => {
   const [attachments, setAttachments] = useState(mockAttachments);
   const [perks, setPerks] = useState(mockPerks);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error] = useState<string | null>(null);
 
   useEffect(() => {
     setLoading(true);

@@ -399,7 +399,7 @@ const OrderList = () => {
                       Configured Parts ({selectedOrder.items.length})
                     </h3>
                     
-                    {selectedOrder.items.map((item: any, index: number) => (
+                    {selectedOrder.items.map((item: any) => (
                       <div key={item.id} className="bg-slate-800/30 rounded-xl p-4 border border-slate-700/50">
                         <div className="flex justify-between items-start mb-3">
                           <div>

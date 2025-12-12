@@ -20,7 +20,7 @@ const mockParts = [
 export const useParts = () => {
   const [parts, setParts] = useState(mockParts);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error] = useState<string | null>(null);
 
   const fetchParts = useCallback(async () => {
     setLoading(true);

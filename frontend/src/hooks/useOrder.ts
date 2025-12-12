@@ -12,7 +12,7 @@ const mockOrders = [
 export const useOrders = () => {
   const [orders, setOrders] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [error] = useState<string | null>(null);
 
   const fetchOrders = useCallback(async () => {
     setLoading(true);

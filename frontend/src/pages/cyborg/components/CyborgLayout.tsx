@@ -6,7 +6,7 @@ interface CyborgLayoutProps {
   cartItemsCount?: number;
 }
 
-const CyborgLayout = ({ children, cartItemsCount = 0 }: CyborgLayoutProps) => {
+const CyborgLayout = ({ children }: CyborgLayoutProps) => {
   return (
     <div
       style={{ fontFamily: "'Orbitron',san serif" }}
