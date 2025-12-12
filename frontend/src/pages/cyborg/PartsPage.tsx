@@ -7,34 +7,6 @@ import { usePartAttachments } from '../../hooks/usePartAttachments';
 import { usePartPerks } from '../../hooks/usePartPerks';
 import { useCart } from '../../hooks/useCart';
 
-interface Part {
-  id: string | number;
-  name: string;
-  category: string;
-  price: number;
-  description: string;
-  longDescription?: string;
-  image?: string;
-  maxAttachments: number;
-  maxPerks: number;
-  base_price?: number;
-}
-
-interface Attachment {
-  id: number;
-  name: string;
-  price: number;
-  description: string;
-  category?: string;
-}
-
-interface Perk {
-  id: number;
-  name: string;
-  price: number;
-  description: string;
-  tier?: string;
-}
 
 const PartsPage = () => {
   const { partId } = useParams<{ partId: string }>();

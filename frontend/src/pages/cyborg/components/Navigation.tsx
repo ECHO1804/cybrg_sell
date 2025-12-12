@@ -3,7 +3,7 @@ import { FiPackage, FiShoppingCart, FiLogOut, FiUser, FiChevronDown, FiEye, FiCh
 
 const Navigation = () => {
   const [isAccountDropdownOpen, setIsAccountDropdownOpen] = useState(false);
-  const [cartItems] = useState(3);
+
   const [isNavbarVisible, setIsNavbarVisible] = useState(true);
   const [isAtTop, setIsAtTop] = useState(true);
 
@@ -44,7 +44,7 @@ const Navigation = () => {
       {!isAtTop && (
         <button
           onClick={toggleNavbar}
-          className="fixed top-4 right-4 z-[9999] p-2 bg-slate-900/90 backdrop-blur-sm rounded-lg border border-cyan-500/30 text-cyan-300 hover:border-cyan-400/50 hover:shadow-[0_0_20px_rgba(6,182,212,0.6)] transition-all group"
+          className="fixed top-4 right-4 z-9999 p-2 bg-slate-900/90 backdrop-blur-sm rounded-lg border border-cyan-500/30 text-cyan-300 hover:border-cyan-400/50 hover:shadow-[0_0_20px_rgba(6,182,212,0.6)] transition-all group"
         >
           {isNavbarVisible ? <FiChevronUp /> : <FiChevronDown />}
         </button>
@@ -52,12 +52,12 @@ const Navigation = () => {
 
     
       <nav 
-        className={`fixed top-0 left-0 right-0 z-[9998] transition-transform duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-9998 transition-transform duration-300 ${
           isNavbarVisible ? 'translate-y-0' : '-translate-y-full'
         }`}
       >
         <div 
-          className="text-white p-[1px] rounded-b-lg bg-gradient-to-r from-cyan-500 via-blue-500 to-blue-50"
+          className="text-white p-1px rounded-b-lg bg-linear-to-r from-cyan-500 via-blue-500 to-blue-50"
           style={{ animation: 'glow-pulse 2s ease-in-out infinite' }}
         >
           <div className="bg-slate-950 rounded-b-lg">
@@ -87,11 +87,6 @@ const Navigation = () => {
                 <a href="/cyborg/cart" className="nav-link flex items-center space-x-2 group relative">
                   <FiShoppingCart className="text-lg group-hover:scale-110 transition-transform" />
                   <span>Cart</span>
-                  {cartItems > 0 && (
-                    <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center drop-shadow-[0_0_6px_rgba(239,68,68,0.7)]">
-                      {cartItems}
-                    </span>
-                  )}
                 </a>
                 
                 <div className="h-6 w-px bg-gray-700"></div>
@@ -108,7 +103,7 @@ const Navigation = () => {
                   </button>
                   
                   {isAccountDropdownOpen && (
-                    <div className="absolute top-full right-0 mt-2 w-56 bg-slate-900/95 backdrop-blur-sm rounded-xl border border-cyan-500/40 shadow-[0_0_50px_rgba(6,182,212,0.5)] z-[10000]">
+                    <div className="absolute top-full right-0 mt-2 w-56 bg-slate-900/95 backdrop-blur-sm rounded-xl border border-cyan-500/40 shadow-[0_0_50px_rgba(6,182,212,0.5)] z-10000">
                       <div className="p-2 space-y-1">
                         <button
                           onClick={handleViewOrders}
