@@ -66,7 +66,7 @@ const PartsCatalog = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Get unique categories from parts
+
   const categories = parts.length > 0 
     ? ['All', ...new Set(parts.map(part => part.category))] 
     : ['All'];
