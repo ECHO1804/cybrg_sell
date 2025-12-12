@@ -313,7 +313,8 @@ const PartsCatalog = () => {
           
           <div className="flex items-center space-x-2">
             {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
-              let pageNum;
+              let pageNum = 1;
+          
               if (totalPages <= 5) {
                 pageNum = i + 1;
               } else if (currentPage <= 3) {

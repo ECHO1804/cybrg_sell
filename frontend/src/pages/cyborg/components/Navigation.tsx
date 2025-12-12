@@ -3,7 +3,6 @@ import { FiPackage, FiShoppingCart, FiLogOut, FiUser, FiChevronDown, FiEye, FiCh
 
 const Navigation = () => {
   const [isAccountDropdownOpen, setIsAccountDropdownOpen] = useState(false);
-  const [cartItems] = useState(3);
   const [isNavbarVisible, setIsNavbarVisible] = useState(true);
   const [isAtTop, setIsAtTop] = useState(true);
 
@@ -87,11 +86,6 @@ const Navigation = () => {
                 <a href="/cyborg/cart" className="nav-link flex items-center space-x-2 group relative">
                   <FiShoppingCart className="text-lg group-hover:scale-110 transition-transform" />
                   <span>Cart</span>
-                  {cartItems > 0 && (
-                    <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center drop-shadow-[0_0_6px_rgba(239,68,68,0.7)]">
-                      {cartItems}
-                    </span>
-                  )}
                 </a>
                     
                 
