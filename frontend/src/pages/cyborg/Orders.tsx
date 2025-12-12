@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { FiPackage, FiTool, FiZap, FiClock, FiCheckCircle, FiXCircle, FiFilter, FiChevronLeft, FiChevronRight, FiX, FiTrash2 } from 'react-icons/fi';
 import CyborgLayout from './components/CyborgLayout';
 
-const Account = () => {
+const Order  = () => {
   const [cartCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedStatus, setSelectedStatus] = useState('All');
@@ -428,4 +428,4 @@ const Account = () => {
   );
 };
 
-export default Account;
+export default Order;

@@ -2,43 +2,57 @@ import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { FiShoppingCart, FiTool, FiZap, FiPackage, FiArrowLeft, FiCheck, FiDollarSign, FiX } from 'react-icons/fi';
 import CyborgLayout from './components/CyborgLayout';
+import { usePart } from '../../hooks/usePart';
+import { usePartAttachments } from '../../hooks/usePartAttachments';
+import { usePartPerks } from '../../hooks/usePartPerks';
+import { useCart } from '../../hooks/useCart';
+
+interface Part {
+  id: string | number;
+  name: string;
+  category: string;
+  price: number;
+  description: string;
+  longDescription?: string;
+  image?: string;
+  maxAttachments: number;
+  maxPerks: number;
+  base_price?: number;
+}
+
+interface Attachment {
+  id: number;
+  name: string;
+  price: number;
+  description: string;
+  category?: string;
+}
+
+interface Perk {
+  id: number;
+  name: string;
+  price: number;
+  description: string;
+  tier?: string;
+}
 
 const PartsPage = () => {
   const { partId } = useParams<{ partId: string }>();
   const navigate = useNavigate();
-  const [cartCount, setCartCount] = useState(0);
+  
+ 
+  const { part, loading: partLoading } = usePart(partId);
+  const { attachments: availableAttachments, loading: attachmentsLoading } = usePartAttachments(partId);
+  const { perks: availablePerks, loading: perksLoading } = usePartPerks(partId);
+  const { cartCount, addToCart } = useCart();
+  
+
   const [selectedAttachments, setSelectedAttachments] = useState<number[]>([]);
   const [selectedPerks, setSelectedPerks] = useState<number[]>([]);
   const [quantity, setQuantity] = useState(1);
   const [showAddToCartModal, setShowAddToCartModal] = useState(false);
+  const [isAddingToCart, setIsAddingToCart] = useState(false);
 
-  // Mock data with slot limits
-  const part = {
-    id: partId || 'PRT-001',
-    name: 'Quantum Arm',
-    category: 'Arm',
-    price: 2500,
-    description: 'Advanced neural-controlled arm with precision sensors and adaptive feedback systems. Features nano-muscle fibers and quantum processors.',
-    longDescription: 'This cutting-edge cybernetic arm integrates seamlessly with neural interfaces, providing unprecedented control and sensory feedback. Equipped with self-repairing nano-muscle fibers and quantum computing processors for real-time adaptation.',
-    image: '/api/placeholder/600/400',
-    maxAttachments: 3, 
-    maxPerks: 2      
-  };
-
-  const availableAttachments = [
-    { id: 1, name: 'Laser Emitter', price: 200, description: 'Integrated energy weapon' },
-    { id: 2, name: 'Hydraulic Grip', price: 150, description: 'Enhanced lifting capacity' },
-    { id: 3, name: 'Sensor Array', price: 300, description: '360° environmental scanning' },
-    { id: 4, name: 'Shield Projector', price: 400, description: 'Energy shield deployment' },
-    { id: 5, name: 'Toolkit Integration', price: 180, description: 'Multi-tool system' }
-  ];
-
-  const availablePerks = [
-    { id: 1, name: 'Speed Boost', price: 100, description: '+25% movement speed' },
-    { id: 2, name: 'Durability+', price: 150, description: 'Enhanced structural integrity' },
-    { id: 3, name: 'Energy Efficiency', price: 120, description: '-30% power consumption' },
-    { id: 4, name: 'Stealth Coating', price: 200, description: 'Reduced thermal signature' }
-  ];
 
   const attachmentsTotal = selectedAttachments.reduce((total, attachmentId) => {
     const attachment = availableAttachments.find(a => a.id === attachmentId);
@@ -50,13 +64,13 @@ const PartsPage = () => {
     return total + (perk?.price || 0);
   }, 0);
 
-  const subtotal = part.price * quantity;
+  const subtotal = part ? part.price * quantity : 0;
   const total = subtotal + attachmentsTotal + perksTotal;
 
   const handleToggleAttachment = (attachmentId: number) => {
     if (selectedAttachments.includes(attachmentId)) {
       setSelectedAttachments(prev => prev.filter(id => id !== attachmentId));
-    } else if (selectedAttachments.length < part.maxAttachments) {
+    } else if (selectedAttachments.length < (part?.maxAttachments || 0)) {
       setSelectedAttachments(prev => [...prev, attachmentId]);
     }
   };
@@ -64,24 +78,43 @@ const PartsPage = () => {
   const handleTogglePerk = (perkId: number) => {
     if (selectedPerks.includes(perkId)) {
       setSelectedPerks(prev => prev.filter(id => id !== perkId));
-    } else if (selectedPerks.length < part.maxPerks) {
+    } else if (selectedPerks.length < (part?.maxPerks || 0)) {
       setSelectedPerks(prev => [...prev, perkId]);
     }
   };
 
-  const handleOrderNow = () => {
-    const orderData = {
-      partId: part.id,
-      partName: part.name,
-      quantity,
-      attachments: selectedAttachments,
-      perks: selectedPerks,
-      totalPrice: total
-    };
+  const handleOrderNow = async () => {
+    if (!part) return;
     
-    console.log('Creating order:', orderData);
-    setCartCount(prev => prev + quantity);
-    setShowAddToCartModal(true);
+    setIsAddingToCart(true);
+    try {
+
+      const selectedAttachmentObjects = availableAttachments
+        .filter(attachment => selectedAttachments.includes(attachment.id))
+        .map(attachment => ({
+          id: attachment.id,
+          name: attachment.name,
+          price: attachment.price
+        }));
+
+      const selectedPerkObjects = availablePerks
+        .filter(perk => selectedPerks.includes(perk.id))
+        .map(perk => ({
+          id: perk.id,
+          name: perk.name,
+          price: perk.price
+        }));
+
+    
+      await addToCart(part.id, selectedAttachmentObjects, selectedPerkObjects);
+      
+      setShowAddToCartModal(true);
+    } catch (err) {
+      console.error('Failed to add to cart:', err);
+      alert('Failed to add to cart. Please try again.');
+    } finally {
+      setIsAddingToCart(false);
+    }
   };
 
   const getCategoryColor = (category: string) => {
@@ -93,6 +126,61 @@ const PartsPage = () => {
     };
     return colors[category as keyof typeof colors] || 'from-slate-600 to-slate-700';
   };
+
+  // Loading state
+  if (partLoading || attachmentsLoading || perksLoading) {
+    return (
+      <CyborgLayout cartItemsCount={cartCount}>
+        <button
+          onClick={() => navigate('/cyborg/parts')}
+          className="flex items-center gap-2 text-cyan-300 hover:text-cyan-200 mb-6 transition-all group drop-shadow-[0_0_8px_rgba(6,182,212,0.5)]"
+        >
+          <FiArrowLeft className="group-hover:-translate-x-1 transition-transform" />
+          <span className="font-medium">Back to Catalog</span>
+        </button>
+        
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="text-center">
+            <div className="w-16 h-16 border-4 border-cyan-500/30 border-t-cyan-500 rounded-full animate-spin mx-auto mb-4"></div>
+            <p className="text-cyan-300 drop-shadow-[0_0_8px_rgba(6,182,212,0.5)]">
+              Loading part details...
+            </p>
+          </div>
+        </div>
+      </CyborgLayout>
+    );
+  }
+
+  // Error state or part not found
+  if (!part) {
+    return (
+      <CyborgLayout cartItemsCount={cartCount}>
+        <button
+          onClick={() => navigate('/cyborg/parts')}
+          className="flex items-center gap-2 text-cyan-300 hover:text-cyan-200 mb-6 transition-all group drop-shadow-[0_0_8px_rgba(6,182,212,0.5)]"
+        >
+          <FiArrowLeft className="group-hover:-translate-x-1 transition-transform" />
+          <span className="font-medium">Back to Catalog</span>
+        </button>
+        
+        <div className="bg-slate-900/60 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-12 text-center">
+          <FiPackage className="text-6xl text-cyan-500/50 mx-auto mb-4 drop-shadow-[0_0_20px_rgba(6,182,212,0.5)]" />
+          <h3 className="text-xl font-bold text-white mb-2 drop-shadow-[0_0_10px_rgba(6,182,212,0.6)]">
+            Part Not Found
+          </h3>
+          <p className="text-cyan-300/70 mb-6">
+            The part you're looking for doesn't exist or has been removed.
+          </p>
+          <button
+            onClick={() => navigate('/cyborg')}
+            className="inline-flex items-center gap-2 px-6 py-3 bg-linear-to-r from-cyan-500/20 to-blue-500/20 text-cyan-300 rounded-xl border border-cyan-500/30 hover:border-cyan-400/50 hover:shadow-[0_0_25px_rgba(6,182,212,0.5)] transition-all"
+          >
+            Browse Parts Catalog
+          </button>
+        </div>
+      </CyborgLayout>
+    );
+  }
 
   return (
     <CyborgLayout cartItemsCount={cartCount}>
@@ -370,11 +458,11 @@ const PartsPage = () => {
             </div>
 
             <button
-              onClick={handleOrderNow}
-              className="w-full px-6 py-3 bg-linear-to-r from-cyan-500/30 to-blue-500/30 text-white rounded-xl border border-cyan-500/40 hover:border-cyan-400/50 hover:shadow-[0_0_30px_rgba(6,182,212,0.8)] transition-all text-base font-bold flex items-center justify-center gap-3 group hover:scale-[1.02]"
-            >
-              <FiShoppingCart className="group-hover:scale-110 transition-transform" />
-              <span>ORDER NOW</span>
+                onClick={handleOrderNow}
+                disabled={isAddingToCart}
+                className={`w-full px-6 py-3 bg-linear-to-r from-cyan-500/30 to-blue-500/30 text-white rounded-xl border border-cyan-500/40 hover:border-cyan-400/50 hover:shadow-[0_0_30px_rgba(6,182,212,0.8)] transition-all text-base font-bold flex items-center justify-center gap-3 group hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed`}>
+                <FiShoppingCart className="group-hover:scale-110 transition-transform" />
+              <span>{isAddingToCart ? 'Adding to Cart...' : 'ORDER NOW'}</span>
             </button>
             
             <p className="text-center text-cyan-300/70 text-xs mt-3">

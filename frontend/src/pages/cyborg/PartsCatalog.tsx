@@ -1,57 +1,62 @@
 import { useState, useRef, useEffect } from 'react';
 import { FiSearch, FiFilter, FiShoppingCart, FiPackage, FiTool, FiZap, FiX, FiChevronLeft, FiChevronRight, FiCheck } from 'react-icons/fi';
 import CyborgLayout from './components/CyborgLayout';
+import { useNavigate } from 'react-router-dom';
+import { useParts } from '../../hooks/useParts';
+import { useCart } from '../../hooks/useCart';
+import { useAttachmentsAndPerks } from '../../hooks/useAttachmentsAndPerks';
+
+interface Part {
+  id: string;
+  name: string;
+  category: string;
+  description?: string;
+  price: string;
+  maxAttachments: number;
+  maxPerks: number;
+  image?: string;
+}
+
+interface Attachment {
+  id: number;
+  name: string;
+  price: number;
+  category: string;
+}
+
+interface Perk {
+  id: number;
+  name: string;
+  price: number;
+  tier: string;
+}
+
+interface CartItem {
+  id: string | number;
+  partId: string | number;
+  attachments: Array<{ id: number; name: string; price: number }>;
+  perks: Array<{ id: number; name: string; price: number }>;
+}
 
 const PartsCatalog = () => {
+  const navigate = useNavigate(); 
+
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchQuery, setSearchQuery] = useState('');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
-  const [cartCount, setCartCount] = useState(0);
-  const [selectedPart, setSelectedPart] = useState<any>(null);
+  const [selectedPart, setSelectedPart] = useState<Part | null>(null);
   const [isHoloModalOpen, setIsHoloModalOpen] = useState(false);
   const [modalSelectedAttachments, setModalSelectedAttachments] = useState<number[]>([]);
   const [modalSelectedPerks, setModalSelectedPerks] = useState<number[]>([]);
   const filterRef = useRef<HTMLDivElement>(null);
   const itemsPerPage = 12;
+  
+  const { parts, loading: partsLoading } = useParts();
+  const { attachments: modalAttachments, perks: modalPerks } = useAttachmentsAndPerks();
+  const { cartCount, addToCart, loading: cartLoading } = useCart();
 
-  const parts = [
-    { id: 'PRT-001', name: 'Quantum Arm', category: 'Arm', price: '$2,500', description: 'Advanced neural-controlled arm with precision sensors', maxAttachments: 3, maxPerks: 2, image: '/api/placeholder/400/300' },
-    { id: 'PRT-002', name: 'Neural Processor', category: 'Organ', price: '$1,800', description: 'High-speed cognitive processing unit', maxAttachments: 2, maxPerks: 3, image: '/api/placeholder/400/300' },
-    { id: 'PRT-003', name: 'Titanium Leg', category: 'Leg', price: '$2,200', description: 'Durable leg with hydraulic boost system', maxAttachments: 4, maxPerks: 2, image: '/api/placeholder/400/300' },
-    { id: 'PRT-004', name: 'Holo-Vision Eye', category: 'Organ', price: '$1,500', description: 'Enhanced vision with augmented reality overlay', maxAttachments: 3, maxPerks: 1, image: '/api/placeholder/400/300' },
-    { id: 'PRT-005', name: 'Carbon Fiber Torso', category: 'Torso', price: '$3,000', description: 'Lightweight torso with integrated armor', maxAttachments: 5, maxPerks: 3, image: '/api/placeholder/400/300' },
-    { id: 'PRT-006', name: 'Synthetic Heart', category: 'Organ', price: '$4,200', description: 'Advanced life support and energy system', maxAttachments: 2, maxPerks: 4, image: '/api/placeholder/400/300' },
-    { id: 'PRT-007', name: 'Hydraulic Arm', category: 'Arm', price: '$1,900', description: 'Industrial strength arm for heavy lifting', maxAttachments: 4, maxPerks: 2, image: '/api/placeholder/400/300' },
-    { id: 'PRT-008', name: 'Cybernetic Liver', category: 'Organ', price: '$3,500', description: 'Toxin filtering and metabolic enhancer', maxAttachments: 3, maxPerks: 2, image: '/api/placeholder/400/300' },
-    { id: 'PRT-009', name: 'Power Cell', category: 'Organ', price: '$1,600', description: 'Enhanced energy storage and distribution', maxAttachments: 1, maxPerks: 1, image: '/api/placeholder/400/300' },
-    { id: 'PRT-010', name: 'Mobility Boost', category: 'Leg', price: '$1,200', description: 'Enhanced speed and agility system', maxAttachments: 2, maxPerks: 3, image: '/api/placeholder/400/300' },
-    { id: 'PRT-011', name: 'Sensory Array', category: 'Organ', price: '$2,800', description: 'Multi-spectrum vision and detection suite', maxAttachments: 3, maxPerks: 2, image: '/api/placeholder/400/300' },
-    { id: 'PRT-012', name: 'Processing Core', category: 'Organ', price: '$3,200', description: 'Advanced computing and analysis unit', maxAttachments: 2, maxPerks: 4, image: '/api/placeholder/400/300' },
-    { id: 'PRT-013', name: 'Stealth Arm', category: 'Arm', price: '$2,800', description: 'Low-profile arm with radar absorbing materials', maxAttachments: 3, maxPerks: 2, image: '/api/placeholder/400/300' },
-    { id: 'PRT-014', name: 'Jump Boost Leg', category: 'Leg', price: '$2,500', description: 'Enhanced jumping and impact absorption', maxAttachments: 3, maxPerks: 2, image: '/api/placeholder/400/300' },
-    { id: 'PRT-015', name: 'Armored Torso', category: 'Torso', price: '$3,500', description: 'Heavy-duty torso with ballistic protection', maxAttachments: 4, maxPerks: 3, image: '/api/placeholder/400/300' },
-  ];
-
-  const categories = ['All', 'Arm', 'Leg', 'Torso', 'Organ'];
-
-  // Modal attachments and perks data
-  const modalAttachments = [
-    { id: 1, name: 'Laser Emitter', price: 200 },
-    { id: 2, name: 'Hydraulic Grip', price: 150 },
-    { id: 3, name: 'Sensor Array', price: 300 },
-    { id: 4, name: 'Shield Projector', price: 400 },
-    { id: 5, name: 'Toolkit Integration', price: 180 }
-  ];
-
-  const modalPerks = [
-    { id: 1, name: 'Speed Boost', price: 100 },
-    { id: 2, name: 'Durability+', price: 150 },
-    { id: 3, name: 'Energy Efficiency', price: 120 },
-    { id: 4, name: 'Stealth Coating', price: 200 }
-  ];
-
-  useEffect(() => {
+ useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (filterRef.current && !filterRef.current.contains(event.target as Node)) {
         setIsFilterOpen(false);
@@ -61,11 +66,16 @@ const PartsCatalog = () => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+
+  const categories = parts.length > 0 
+    ? ['All', ...new Set(parts.map(part => part.category))] 
+    : ['All'];
+
   const filteredParts = parts.filter(part => {
     const matchesCategory = selectedCategory === 'All' || part.category === selectedCategory;
     const matchesSearch = searchQuery === '' || 
       part.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      part.description.toLowerCase().includes(searchQuery.toLowerCase());
+      part.description?.toLowerCase().includes(searchQuery.toLowerCase());
     return matchesCategory && matchesSearch;
   });
 
@@ -73,7 +83,7 @@ const PartsCatalog = () => {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const currentParts = filteredParts.slice(startIndex, startIndex + itemsPerPage);
 
-  const openHoloModal = (part: any) => {
+  const openHoloModal = (part: Part) => {
     setSelectedPart(part);
     setModalSelectedAttachments([]);
     setModalSelectedPerks([]);
@@ -116,10 +126,32 @@ const PartsCatalog = () => {
     return basePrice + attachmentsTotal + perksTotal;
   };
 
-  const handleAddToCart = () => {
-    setCartCount(prev => prev + 1);
-    console.log('Added to cart:', selectedPart?.name);
-    closeHoloModal();
+  const handleAddToCart = async () => {
+    if (!selectedPart) return;
+
+    try {
+      const selectedAttachmentObjects = modalAttachments
+        .filter(attachment => modalSelectedAttachments.includes(attachment.id))
+        .map(attachment => ({
+          id: attachment.id,
+          name: attachment.name,
+          price: attachment.price
+        }));
+
+      const selectedPerkObjects = modalPerks
+        .filter(perk => modalSelectedPerks.includes(perk.id))
+        .map(perk => ({
+          id: perk.id,
+          name: perk.name,
+          price: perk.price
+        }));
+
+      await addToCart(selectedPart.id, selectedAttachmentObjects, selectedPerkObjects);
+      console.log('Added to cart:', selectedPart.name);
+      closeHoloModal();
+    } catch (err) {
+      console.error('Failed to add to cart:', err);
+    }
   };
 
   const getCategoryColor = (category: string) => {
@@ -199,11 +231,11 @@ const PartsCatalog = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-10">
         {currentParts.map((part) => (
-          <div 
-            key={part.id} 
-            className="bg-transparent backdrop-blur-sm rounded-2xl overflow-hidden group hover:shadow-[0_0_35px_rgba(6,182,212,0.6)] transition-all duration-300 flex flex-col h-full border border-cyan-500/20 hover:border-cyan-400/40 cursor-pointer"
-            onClick={() => window.location.href = `/cyborg/parts/${part.id}`}
-          >
+           <div 
+              key={part.id} 
+              className="bg-transparent backdrop-blur-sm rounded-2xl overflow-hidden group hover:shadow-[0_0_35px_rgba(6,182,212,0.6)] transition-all duration-300 flex flex-col h-full border border-cyan-500/20 hover:border-cyan-400/40 cursor-pointer"
+              onClick={() => navigate(`/cyborg/parts/${part.id}`)} 
+            >
           
             <div className="h-56 relative overflow-hidden">
     

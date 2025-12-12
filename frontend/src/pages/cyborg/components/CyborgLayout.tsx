@@ -9,7 +9,7 @@ interface CyborgLayoutProps {
 const CyborgLayout = ({ children, cartItemsCount = 0 }: CyborgLayoutProps) => {
   return (
     <div
-      style={{ fontFamily: "'Aquire', 'Orbitron'" }}
+      style={{ fontFamily: "'Orbitron',san serif" }}
       className="min-h-screen bg-slate-950"
     >
       <Navigation />

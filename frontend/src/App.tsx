@@ -15,8 +15,8 @@ function App() {
       <Routes>
         <Route path="/cyborg/cart" element={<ShoppingCart />} />
         <Route path="/cyborg/orders" element={<Orders />} />
-        <Route path="/cyborg" element={<PartsCatalog />} /> 
-        <Route path="/cyborg/parts/:id" element={<PartsPage />} />
+        <Route path="/cyborg/parts" element={<PartsCatalog />} /> 
+        <Route path="/cyborg/parts/:partId" element={<PartsPage />} />
 
         <Route path="/admin" element={<OrderList />} /> 
         <Route path="/admin/products" element={<ProductsList />} /> 
