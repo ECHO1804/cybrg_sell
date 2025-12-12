@@ -1,70 +1,67 @@
 import { useState } from 'react';
-import { FiTrash2, FiPackage, FiTool, FiZap, FiShoppingBag, FiCheckCircle, FiX } from 'react-icons/fi';
+import { 
+  FiTrash2, FiPackage, FiTool, FiZap, FiShoppingBag, 
+  FiCheckCircle, FiX 
+} from 'react-icons/fi';
 import CyborgLayout from './components/CyborgLayout';
+import { useCart } from '../../hooks/useCart';
+
+// Interfaces are now defined in the hook, but we can keep them here for reference
+interface CartItem {
+  id: string | number;
+  cart_item_id?: number;
+  part_id: string | number;
+  part_name: string;
+  part_price: number;
+  category: string;
+  quantity: number;
+  attachments: Array<{ id: number; name: string; price: number }>;
+  perks: Array<{ id: number; name: string; price: number }>;
+  total_price: number;
+}
 
 const ShoppingCart = () => {
-  const [cartItems, setCartItems] = useState([
-    {
-      id: 1,
-      cart_item_id: 101,
-      part_id: 5,
-      part_name: 'Quantum Arm',
-      part_price: 2500,
-      category: 'Arm',
-      quantity: 1,
-      attachments: [
-        { id: 10, name: 'Laser Emitter', price: 200 },
-        { id: 15, name: 'Shield Projector', price: 150 }
-      ],
-      perks: [
-        { id: 7, name: 'Speed Boost', price: 100 }
-      ],
-      total_price: 2950
-    },
-    {
-      id: 2,
-      cart_item_id: 102,
-      part_id: 3,
-      part_name: 'Titanium Leg',
-      part_price: 2200,
-      category: 'Leg',
-      quantity: 1,
-      attachments: [
-        { id: 8, name: 'Hydraulic Boost', price: 300 }
-      ],
-      perks: [
-        { id: 5, name: 'Durability+', price: 150 },
-        { id: 6, name: 'Energy Efficiency', price: 120 }
-      ],
-      total_price: 2770
-    }
-  ]);
-
+  // Use the cart hook with all functionality
+  const { 
+    cartItems, 
+    cartCount, 
+    loading: cartLoading, 
+    removeFromCart, 
+    updateCartItem, 
+    placeOrder,
+    clearCart 
+  } = useCart();
+  
+  // Local state for UI
   const [showSuccessModal, setShowSuccessModal] = useState(false);
-  const [showRemoveConfirm, setShowRemoveConfirm] = useState<number | null>(null);
+  const [showRemoveConfirm, setShowRemoveConfirm] = useState<string | number | null>(null);
+  const [isPlacingOrder, setIsPlacingOrder] = useState(false);
+  const [isRemovingItem, setIsRemovingItem] = useState(false);
 
-  const handleRemoveItem = (cartItemId: number) => {
-    setCartItems(prev => prev.filter(item => item.cart_item_id !== cartItemId));
-    setShowRemoveConfirm(null);
+  const handleRemoveItem = async (cartItemId: string | number) => {
+    setIsRemovingItem(true);
+    try {
+      await removeFromCart(cartItemId);
+      setShowRemoveConfirm(null);
+    } catch (err) {
+      console.error('Failed to remove item:', err);
+      alert('Failed to remove item. Please try again.');
+    } finally {
+      setIsRemovingItem(false);
+    }
   };
 
-  const handleUpdateQuantity = (cartItemId: number, newQuantity: number) => {
+  const handleUpdateQuantity = async (cartItemId: string | number, newQuantity: number) => {
     if (newQuantity < 1) {
       setShowRemoveConfirm(cartItemId);
       return;
     }
     
-    setCartItems(prev => prev.map(item => 
-      item.cart_item_id === cartItemId 
-        ? { 
-            ...item, 
-            quantity: newQuantity,
-            total_price: (item.part_price + 
-                         item.attachments.reduce((sum, att) => sum + att.price, 0) +
-                         item.perks.reduce((sum, perk) => sum + perk.price, 0)) * newQuantity
-          }
-        : item
-    ));
+    try {
+      await updateCartItem(cartItemId, { quantity: newQuantity });
+    } catch (err) {
+      console.error('Failed to update quantity:', err);
+    }
   };
 
   const calculateCartTotal = () => {
@@ -72,12 +69,20 @@ const ShoppingCart = () => {
   };
 
   const calculateItemsCount = () => {
-    return cartItems.reduce((count, item) => count + item.quantity, 0);
+    return cartItems.reduce((count, item) => count + (item.quantity || 1), 0);
   };
 
-  const handlePlaceOrder = () => {
-    console.log('Order placed:', cartItems);
-    setShowSuccessModal(true);
+  const handlePlaceOrder = async () => {
+    setIsPlacingOrder(true);
+    try {
+      await placeOrder();
+      setShowSuccessModal(true);
+    } catch (err) {
+      console.error('Failed to place order:', err);
+      alert('Failed to place order. Please try again.');
+    } finally {
+      setIsPlacingOrder(false);
+    }
   };
 
   const getCategoryGlow = (category: string) => {
@@ -90,9 +95,33 @@ const ShoppingCart = () => {
     return colors[category as keyof typeof colors] || 'bg-slate-800/50 border-slate-700/50 text-slate-300';
   };
 
+  // Loading state - only show if initial load
+  if (cartLoading && cartItems.length === 0) {
+    return (
+      <CyborgLayout cartItemsCount={0}>
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold text-white mb-2 drop-shadow-[0_0_15px_rgba(6,182,212,0.7)]">
+            SHOPPING CART
+          </h1>
+          <p className="text-cyan-300/70 drop-shadow-[0_0_8px_rgba(6,182,212,0.5)]">
+            Review your cybernetic upgrades before ordering
+          </p>
+        </div>
+        
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="text-center">
+            <div className="w-16 h-16 border-4 border-cyan-500/30 border-t-cyan-500 rounded-full animate-spin mx-auto mb-4"></div>
+            <p className="text-cyan-300 drop-shadow-[0_0_8px_rgba(6,182,212,0.5)]">
+              Loading your cart...
+            </p>
+          </div>
+        </div>
+      </CyborgLayout>
+    );
+  }
+
   return (
-    <CyborgLayout cartItemsCount={calculateItemsCount()}>
-     
+    <CyborgLayout cartItemsCount={cartCount}>
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-white mb-2 drop-shadow-[0_0_15px_rgba(6,182,212,0.7)]">
           SHOPPING CART
@@ -102,7 +131,6 @@ const ShoppingCart = () => {
         </p>
       </div>
 
-     
       <div className="space-y-6 mb-10">
         {cartItems.length === 0 ? (
           <div className="bg-slate-900/60 backdrop-blur-sm rounded-2xl border border-slate-700/50 p-12 text-center">
@@ -122,14 +150,13 @@ const ShoppingCart = () => {
             </a>
           </div>
         ) : (
-          cartItems.map(item => (
+          cartItems.map((item: CartItem) => (
             <div 
-              key={item.cart_item_id}
+              key={item.id || item.cart_item_id}
               className="bg-slate-900/60 backdrop-blur-sm rounded-2xl border border-slate-700/50 overflow-hidden group hover:border-cyan-500/30 transition-all duration-300"
             >
               <div className="p-6">
                 <div className="flex flex-col md:flex-row md:items-start gap-6">
-                 
                   <div className="flex-1">
                     <div className="flex items-start justify-between mb-4">
                       <div>
@@ -146,10 +173,9 @@ const ShoppingCart = () => {
                         </div>
                       </div>
                       
-                     
                       <div className="flex items-center gap-3">
                         <button
-                          onClick={() => handleUpdateQuantity(item.cart_item_id, item.quantity - 1)}
+                          onClick={() => handleUpdateQuantity(item.id || item.cart_item_id!, item.quantity - 1)}
                           className="px-3 py-1 rounded-lg border border-cyan-500/30 text-cyan-300 hover:border-cyan-400/50 hover:shadow-[0_0_15px_rgba(6,182,212,0.4)] transition-all hover:scale-110"
                         >
                           −
@@ -158,7 +184,7 @@ const ShoppingCart = () => {
                           {item.quantity}
                         </div>
                         <button
-                          onClick={() => handleUpdateQuantity(item.cart_item_id, item.quantity + 1)}
+                          onClick={() => handleUpdateQuantity(item.id || item.cart_item_id!, item.quantity + 1)}
                           className="px-3 py-1 rounded-lg border border-cyan-500/30 text-cyan-300 hover:border-cyan-400/50 hover:shadow-[0_0_15px_rgba(6,182,212,0.4)] transition-all hover:scale-110"
                         >
                           +
@@ -166,7 +192,6 @@ const ShoppingCart = () => {
                       </div>
                     </div>
 
-                    
                     {item.attachments.length > 0 && (
                       <div className="mb-4">
                         <div className="flex items-center gap-2 text-cyan-300 mb-2 drop-shadow-[0_0_6px_rgba(6,182,212,0.5)]">
@@ -174,7 +199,7 @@ const ShoppingCart = () => {
                           <span className="font-bold">ATTACHMENTS</span>
                         </div>
                         <div className="flex flex-wrap gap-2">
-                          {item.attachments.map(att => (
+                          {item.attachments.map((att: any) => (
                             <span 
                               key={att.id}
                               className="px-3 py-1.5 rounded-lg bg-cyan-500/20 border border-cyan-500/40 text-cyan-200 text-sm font-medium shadow-[0_0_8px_rgba(6,182,212,0.4)]"
@@ -186,7 +211,6 @@ const ShoppingCart = () => {
                       </div>
                     )}
 
-                  
                     {item.perks.length > 0 && (
                       <div>
                         <div className="flex items-center gap-2 text-purple-300 mb-2 drop-shadow-[0_0_6px_rgba(168,85,247,0.5)]">
@@ -194,7 +218,7 @@ const ShoppingCart = () => {
                           <span className="font-bold">PERKS</span>
                         </div>
                         <div className="flex flex-wrap gap-2">
-                          {item.perks.map(perk => (
+                          {item.perks.map((perk: any) => (
                             <span 
                               key={perk.id}
                               className="px-3 py-1.5 rounded-lg bg-purple-500/20 border border-purple-500/40 text-purple-200 text-sm font-medium shadow-[0_0_8px_rgba(168,85,247,0.4)]"
@@ -207,7 +231,6 @@ const ShoppingCart = () => {
                     )}
                   </div>
 
-                 
                   <div className="md:w-48 space-y-4">
                     <div className="text-right">
                       <div className="text-cyan-300/70 text-sm mb-1">Item Total</div>
@@ -217,7 +240,7 @@ const ShoppingCart = () => {
                     </div>
                     
                     <button
-                      onClick={() => setShowRemoveConfirm(item.cart_item_id)}
+                      onClick={() => setShowRemoveConfirm(item.id || item.cart_item_id!)}
                       className="w-full flex items-center justify-center gap-2 px-4 py-2.5 bg-red-500/10 text-red-300 rounded-lg border border-red-500/30 hover:border-red-400/50 hover:shadow-[0_0_20px_rgba(239,68,68,0.5)] transition-all group hover:scale-[1.02]"
                     >
                       <FiTrash2 className="group-hover:scale-110 transition-transform" />
@@ -231,11 +254,9 @@ const ShoppingCart = () => {
         )}
       </div>
 
-     
       {cartItems.length > 0 && (
         <div className="bg-linear-to-br from-slate-900/60 to-slate-800/40 backdrop-blur-sm rounded-2xl border border-cyan-500/30 p-8 shadow-[0_0_40px_rgba(6,182,212,0.3)]">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-           
             <div>
               <h3 className="text-xl font-bold text-white mb-6 drop-shadow-[0_0_12px_rgba(6,182,212,0.7)]">
                 ORDER SUMMARY
@@ -258,13 +279,13 @@ const ShoppingCart = () => {
               </div>
             </div>
 
-           
             <div className="flex flex-col justify-end space-y-4">
               <button
                 onClick={handlePlaceOrder}
-                className="w-full px-6 py-4 bg-linear-to-r from-cyan-500/30 to-blue-500/30 text-white rounded-xl border border-cyan-500/40 hover:border-cyan-400/50 hover:shadow-[0_0_35px_rgba(6,182,212,0.8)] transition-all text-lg font-bold hover:scale-[1.02] active:scale-[0.98]"
+                disabled={isPlacingOrder}
+                className={`w-full px-6 py-4 bg-linear-to-r from-cyan-500/30 to-blue-500/30 text-white rounded-xl border border-cyan-500/40 hover:border-cyan-400/50 hover:shadow-[0_0_35px_rgba(6,182,212,0.8)] transition-all text-lg font-bold hover:scale-[1.02] active:scale-[0.98] disabled:opacity-50 disabled:cursor-not-allowed`}
               >
-                PLACE ORDER
+                {isPlacingOrder ? 'Placing Order...' : 'PLACE ORDER'}
               </button>
               
               <a
@@ -284,10 +305,12 @@ const ShoppingCart = () => {
         </div>
       )}
 
-     
       {showSuccessModal && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-          <div className="absolute inset-0 bg-black/90 backdrop-blur-sm" onClick={() => setShowSuccessModal(false)}></div>
+          <div className="absolute inset-0 bg-black/90 backdrop-blur-sm" onClick={() => {
+            setShowSuccessModal(false);
+            clearCart();
+          }}></div>
           
           <div className="absolute inset-0 opacity-10" style={{
             backgroundImage: `linear-gradient(0deg, transparent 50%, rgba(6, 182, 212, 0.5) 50%)`,
@@ -306,7 +329,10 @@ const ShoppingCart = () => {
                   <p className="text-green-300/70 text-sm">Your order has been placed successfully</p>
                 </div>
                 <button 
-                  onClick={() => setShowSuccessModal(false)}
+                  onClick={() => {
+                    setShowSuccessModal(false);
+                    clearCart();
+                  }}
                   className="p-2 rounded-lg border border-green-500/30 hover:border-green-400/50 hover:bg-green-500/10 hover:shadow-[0_0_20px_rgba(34,197,94,0.6)] transition-all"
                 >
                   <FiX className="text-green-300 drop-shadow-[0_0_8px_rgba(34,197,94,0.6)]" />
@@ -318,7 +344,7 @@ const ShoppingCart = () => {
               <div className="mb-6">
                 <FiCheckCircle className="text-7xl text-green-400 mx-auto mb-4 drop-shadow-[0_0_30px_rgba(34,197,94,0.9)] animate-pulse" />
                 <div className="text-cyan-300 text-lg font-bold mb-2 drop-shadow-[0_0_12px_rgba(6,182,212,0.7)]">
-                  Order Number: <span className="text-white font-mono">#{Math.floor(Math.random() * 1000000)}</span>
+                  Order Number: <span className="text-white font-mono">ORD-{Date.now().toString().slice(-6)}</span>
                 </div>
                 <p className="text-gray-300">
                   Order total: <span className="text-green-400 font-bold">${calculateCartTotal().toLocaleString()}</span>
@@ -334,7 +360,7 @@ const ShoppingCart = () => {
               <button
                 onClick={() => {
                   setShowSuccessModal(false);
-                  setCartItems([]);
+                  clearCart();
                 }}
                 className="w-full px-6 py-4 bg-linear-to-r from-green-500/30 to-emerald-500/30 text-white rounded-xl border border-green-500/40 hover:border-green-400/50 hover:shadow-[0_0_35px_rgba(34,197,94,0.8)] transition-all text-lg font-bold hover:scale-[1.02]"
               >
@@ -346,7 +372,6 @@ const ShoppingCart = () => {
           </div>
         </div>
       )}
-
 
       {showRemoveConfirm && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
@@ -397,9 +422,10 @@ const ShoppingCart = () => {
                 </button>
                 <button
                   onClick={() => handleRemoveItem(showRemoveConfirm)}
-                  className="flex-1 px-6 py-3 bg-linear-to-r from-red-500/30 to-pink-500/30 text-red-300 rounded-xl border border-red-500/40 hover:border-red-400/50 hover:shadow-[0_0_35px_rgba(239,68,68,0.8)] transition-all hover:scale-[1.02]"
+                  disabled={isRemovingItem}
+                  className={`flex-1 px-6 py-3 bg-linear-to-r from-red-500/30 to-pink-500/30 text-red-300 rounded-xl border border-red-500/40 hover:border-red-400/50 hover:shadow-[0_0_35px_rgba(239,68,68,0.8)] transition-all hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed`}
                 >
-                  Remove
+                  {isRemovingItem ? 'Removing...' : 'Remove'}
                 </button>
               </div>
             </div>

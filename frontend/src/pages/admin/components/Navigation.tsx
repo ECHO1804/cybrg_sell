@@ -49,7 +49,7 @@ const Navigation = () => {
               <a href="/admin" className="flex items-center space-x-3 group">
                 <div className="relative">
                   <img 
-                    src="./assets/images/logo.png"
+                    src="https://cdn.pixabay.com/photo/2022/12/29/16/19/logo-7685266_960_720.png"
                     alt="CYBORGMANIA Logo"
                     className="h-10 w-10 object-contain filter brightness-125 saturate-150 drop-shadow-[0_0_8px_rgba(6,182,212,0.7)] group-hover:drop-shadow-[0_0_15px_rgba(6,182,212,1)] transition-all duration-300"
                   />

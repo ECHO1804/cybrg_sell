@@ -10,7 +10,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   return (
     <div 
       className="min-h-screen bg-slate-950"
-      style={{ fontFamily: "'Aquire', 'Orbitron'" }}
+      style={{ fontFamily: "'Orbitron',san serif" }}
     >
       <Navigation />
       <main className="max-w-7xl mx-auto py-6 px-4 pt-20">

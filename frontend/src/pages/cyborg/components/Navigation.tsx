@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { FiPackage, FiShoppingCart, FiLogOut, FiMenu, FiX, FiUser, FiChevronDown, FiEye, FiChevronUp } from 'react-icons/fi';
+import { FiPackage, FiShoppingCart, FiLogOut, FiUser, FiChevronDown, FiEye, FiChevronUp } from 'react-icons/fi';
 
 const Navigation = () => {
   const [isAccountDropdownOpen, setIsAccountDropdownOpen] = useState(false);
@@ -63,10 +63,10 @@ const Navigation = () => {
           <div className="bg-slate-950 rounded-b-lg">
             <div className="h-16 container mx-auto px-4 sm:px-6 flex items-center justify-between">
             
-              <a href="/cyborg" className="flex items-center space-x-3 group">
+              <a href="/cyborg/parts" className="flex items-center space-x-3 group">
                 <div className="relative">
                   <img 
-                    src="/path-to-your-logo.png"
+                    src="https://cdn.pixabay.com/photo/2022/12/29/16/19/logo-7685266_960_720.png"
                     alt="CYBORGMANIA Logo"
                     className="h-10 w-10 object-contain filter brightness-125 saturate-150 drop-shadow-[0_0_8px_rgba(6,182,212,0.7)] group-hover:drop-shadow-[0_0_15px_rgba(6,182,212,1)] transition-all duration-300"
                   />
@@ -79,7 +79,7 @@ const Navigation = () => {
 
     
               <div className="hidden md:flex items-center space-x-6">
-                <a href="/cyborg" className="nav-link flex items-center space-x-2 group">
+                <a href="/cyborg/parts" className="nav-link flex items-center space-x-2 group">
                   <FiPackage className="text-lg group-hover:scale-110 transition-transform" />
                   <span>Parts</span>
                 </a>
