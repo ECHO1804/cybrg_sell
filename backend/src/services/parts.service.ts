@@ -2,67 +2,42 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-// ES module equivalent of __dirname
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const DATA_PATH = path.join(__dirname, '../data/parts.json');
 
-export type Part = {
-  id: string | number;
-  name: string;
-  category: string;
-  description?: string;
-  base_price: number;
-  quality_tier?: string;
-  rating?: number;
-  reviews_count?: number;
-  images?: string[];
-  available_attachments_slot?: number;
-  available_perks_slot?: number;
-  [k: string]: any;
+const read = () => JSON.parse(fs.readFileSync(DATA_PATH, 'utf-8'));
+
+export const getAllParts = async () => {
+  const parts = read();
+
+  // frontend expects: price = "$2500"
+  return parts.find(p => ({
+    id: p.id,
+    name: p.name,
+    category: p.category,
+    description: p.description,
+    price: `$${p.base_price}`,
+    maxAttachments: p.available_attachments_slot,
+    maxPerks: p.available_perks_slot,
+    image: p.images[0]
+  }));
 };
 
-const readData = (): Part[] => {
-  if (!fs.existsSync(DATA_PATH)) return [];
-  const raw = fs.readFileSync(DATA_PATH, 'utf-8');
-  try { return JSON.parse(raw); } catch { return []; }
-};
+export const getPartById = async (id: string) => {
+  const parts = read();
+  const p = parts.find(x => x.id === id);
+  if (!p) return null;
 
-const writeData = (data: Part[]) => {
-  fs.writeFileSync(DATA_PATH, JSON.stringify(data, null, 2), 'utf-8');
-};
-
-export const getAllParts = async (): Promise<Part[]> => {
-  return readData();
-};
-
-export const getPartById = async (id: string | number): Promise<Part | null> => {
-  const parts = readData();
-  return parts.find(p => String(p.id) === String(id)) || null;
-};
-
-export const createPart = async (payload: Partial<Part>): Promise<Part> => {
-  const parts = readData();
-  const newPart: Part = { id: Date.now(), ...payload } as Part;
-  parts.push(newPart);
-  writeData(parts);
-  return newPart;
-};
-
-export const updatePart = async (id: string | number, payload: Partial<Part>): Promise<Part | null> => {
-  const parts = readData();
-  const idx = parts.findIndex(p => String(p.id) === String(id));
-  if (idx === -1) return null;
-  parts[idx] = { ...parts[idx], ...payload };
-  writeData(parts);
-  return parts[idx];
-};
-
-export const deletePart = async (id: string | number): Promise<boolean> => {
-  let parts = readData();
-  const originalLen = parts.length;
-  parts = parts.filter(p => String(p.id) !== String(id));
-  writeData(parts);
-  return parts.length !== originalLen;
+  return {
+    id: p.id,
+    name: p.name,
+    category: p.category,
+    description: p.description,
+    price: `$${p.base_price}`,
+    maxAttachments: p.available_attachments_slot,
+    maxPerks: p.available_perks_slot,
+    image: p.images[0]
+  };
 };

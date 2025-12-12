@@ -1,0 +1,12 @@
+[
+  { "id": 1, "name": "Laser Emitter", "price": 200, "category": "weapon" },
+  { "id": 2, "name": "Hydraulic Grip", "price": 150, "category": "enhancement" },
+  { "id": 3, "name": "Sensor Array", "price": 300, "category": "detection" },
+  { "id": 4, "name": "Shield Projector", "price": 400, "category": "defense" },
+  { "id": 5, "name": "Toolkit Integration", "price": 180, "category": "utility" },
+  { "id": 6, "name": "Hydraulic Boost", "price": 300, "category": "enhancement" },
+  { "id": 7, "name": "Zoom Lens", "price": 250, "category": "vision" },
+  { "id": 8, "name": "Radar Scanner", "price": 350, "category": "detection" },
+  { "id": 9, "name": "Neural Link", "price": 280, "category": "neural" },
+  { "id": 10, "name": "Grip Enhancer", "price": 120, "category": "enhancement" }
+]

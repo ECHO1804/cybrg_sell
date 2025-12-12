@@ -1,4 +1,4 @@
-import type { Request, Response } from 'express';
+import { Request, Response } from 'express';
 import * as partsService from '../services/parts.service';
 
 export const getAllParts = async (req: Request, res: Response) => {
@@ -48,3 +48,4 @@ export const deletePart = async (req: Request, res: Response) => {
     res.status(500).json({ message: 'Failed to delete part' });
   }
 };
+

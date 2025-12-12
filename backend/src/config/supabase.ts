@@ -1,10 +1,31 @@
-import { createClient } from '@supabase/supabase-js';
-import dotenv from 'dotenv';
-
-dotenv.config();
-
-
-export const supabase = createClient(
-  process.env.SUPABASE_URL!,
-  process.env.SUPABASE_KEY!
-);
+// Mock Supabase client for now - will be replaced with real DB later
+export const supabase = {
+  from: (table: string) => ({
+    select: () => ({
+      eq: () => ({
+        single: () => ({
+          data: null,
+          error: null
+        })
+      }),
+      single: () => ({
+        data: null,
+        error: null
+      })
+    }),
+    insert: () => ({
+      select: () => ({
+        single: () => ({
+          data: null,
+          error: null
+        })
+      })
+    }),
+    delete: () => ({
+      eq: () => ({
+        data: null,
+        error: null
+      })
+    })
+  })
+};

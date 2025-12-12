@@ -1,20 +1,23 @@
-import type { Request, Response, NextFunction } from 'express';
-import { verifyToken } from '../utils/jwt.js';
+import { Request, Response, NextFunction } from 'express';
+import { verifyToken } from '../utils/jwt';
 
-export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
-  const header = req.headers.authorization;
+import type { Request, Response, NextFunction } from "express";
 
-  if (!header || !header.startsWith("Bearer ")) {
-    return res.status(401).json({ message: "Unauthorized" });
-  }
+export interface AuthenticatedRequest extends Request {
+  user?: {
+    id: string;
+  };
+}
 
-  const token = header.split(" ")[1];
+export function mockAuth(
+  req: AuthenticatedRequest,
+  res: Response,
+  next: NextFunction
+) {
+  const userId = req.headers["x-user-id"];
 
-  try {
-    const decoded = verifyToken(token);
-    (req as any).user = decoded;
-    next();
-  } catch (err) {
-    return res.status(403).json({ message: "Invalid token" });
+  // Assign a fake user if header present
+  if (userId && typeof userId === "string") {
+    req.user = { id: userId };
   }
 };
