@@ -6,7 +6,7 @@ import {
 import CyborgLayout from './components/CyborgLayout';
 import { useCart } from '../../hooks/useCart';
 
-// Interfaces are now defined in the hook, but we can keep them here for reference
+
 interface CartItem {
   id: string | number;
   cart_item_id?: number;
@@ -21,7 +21,7 @@ interface CartItem {
 }
 
 const ShoppingCart = () => {
-  // Use the cart hook with all functionality
+
   const { 
     cartItems, 
     cartCount, 
@@ -32,7 +32,7 @@ const ShoppingCart = () => {
     clearCart 
   } = useCart();
   
-  // Local state for UI
+
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showRemoveConfirm, setShowRemoveConfirm] = useState<string | number | null>(null);
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
@@ -95,7 +95,7 @@ const ShoppingCart = () => {
     return colors[category as keyof typeof colors] || 'bg-slate-800/50 border-slate-700/50 text-slate-300';
   };
 
-  // Loading state - only show if initial load
+
   if (cartLoading && cartItems.length === 0) {
     return (
       <CyborgLayout cartItemsCount={0}>

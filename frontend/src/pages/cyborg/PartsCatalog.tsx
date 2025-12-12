@@ -17,26 +17,7 @@ interface Part {
   image?: string;
 }
 
-interface Attachment {
-  id: number;
-  name: string;
-  price: number;
-  category: string;
-}
 
-interface Perk {
-  id: number;
-  name: string;
-  price: number;
-  tier: string;
-}
-
-interface CartItem {
-  id: string | number;
-  partId: string | number;
-  attachments: Array<{ id: number; name: string; price: number }>;
-  perks: Array<{ id: number; name: string; price: number }>;
-}
 
 const PartsCatalog = () => {
   const navigate = useNavigate(); 
@@ -52,9 +33,9 @@ const PartsCatalog = () => {
   const filterRef = useRef<HTMLDivElement>(null);
   const itemsPerPage = 12;
   
-  const { parts, loading: partsLoading } = useParts();
+  const { parts } = useParts();
   const { attachments: modalAttachments, perks: modalPerks } = useAttachmentsAndPerks();
-  const { cartCount, addToCart, loading: cartLoading } = useCart();
+  const { cartCount, addToCart} = useCart();
 
  useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
